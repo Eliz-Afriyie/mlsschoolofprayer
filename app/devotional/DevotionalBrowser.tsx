@@ -16,13 +16,19 @@ export default function DevotionalBrowser({
   const [category, setCategory] = useState("All Categories");
   const [visibleCount, setVisibleCount] = useState(pageSize);
 
-  const categories = useMemo(
-    () => [
-      "All Categories",
-      ...Array.from(new Set(devotionals.map((item) => item.category))).sort(),
-    ],
-    [devotionals]
-  );
+  const categories = useMemo(() => {
+    const counts = devotionals.reduce<Record<string, number>>((acc, item) => {
+      acc[item.category] = (acc[item.category] ?? 0) + 1;
+      return acc;
+    }, {});
+
+    return [
+      { name: "All Categories", count: devotionals.length },
+      ...Object.entries(counts)
+        .sort(([left], [right]) => left.localeCompare(right))
+        .map(([name, count]) => ({ name, count })),
+    ];
+  }, [devotionals]);
 
   const filteredDevotionals = useMemo(() => {
     const normalizedQuery = query.trim().toLowerCase();
@@ -64,7 +70,7 @@ export default function DevotionalBrowser({
     <>
       <div className="mx-auto max-w-7xl px-4 sm:px-6">
         <div className="relative z-30 -mt-8 rounded-2xl border border-gray-200 bg-white p-3 shadow-sm">
-          <div className="grid gap-3 md:grid-cols-[1fr_220px_auto] md:items-center">
+          <div className="grid gap-3 md:grid-cols-[1fr_240px_auto] md:items-center">
             <div className="flex h-12 items-center gap-3 rounded-xl bg-[#F7F8F5] px-4">
               <Search className="text-green-700" size={20} />
               <input
@@ -80,15 +86,18 @@ export default function DevotionalBrowser({
               <select
                 value={category}
                 onChange={(event) => updateCategory(event.target.value)}
-                className="w-full appearance-none bg-transparent outline-none"
+                className="w-full appearance-none bg-transparent pr-8 outline-none"
               >
                 {categories.map((item) => (
-                  <option key={item} value={item}>
-                    {item}
+                  <option key={item.name} value={item.name}>
+                    {item.name} ({item.count})
                   </option>
                 ))}
               </select>
-              <ChevronDown className="pointer-events-none" size={20} />
+              <ChevronDown
+                className="pointer-events-none absolute right-4"
+                size={20}
+              />
             </label>
 
             <p className="px-2 text-sm font-medium text-gray-500 md:text-right">

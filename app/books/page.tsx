@@ -7,7 +7,7 @@ export default async function BooksPage() {
   return (
     <main className="bg-[#F7F8F5] min-h-screen">
       {/* Hero */}
-      <section className="bg-green-900 px-6 py-16 text-white sm:py-24">
+      <section className="flex h-72 items-center bg-green-900 px-6 pb-20 pt-16 text-white sm:h-80 sm:pb-24 sm:pt-20">
         <div className="mx-auto max-w-7xl">
           <h1 className="mb-5 text-4xl font-bold sm:text-5xl">
             Christian Books

@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { FormEvent, useEffect, useState } from "react";
-import { LogIn, Menu, Search, X } from "lucide-react";
+import { Menu, Search, UserCircle, X } from "lucide-react";
 
 const navLinks = [
   { name: "Home", href: "/" },
@@ -179,14 +179,14 @@ export default function Navbar() {
 
             <Link
               href="/admin/login"
-              className={`hidden h-9 items-center gap-2 rounded-xl px-3 text-sm font-medium transition sm:inline-flex ${
+              className={`hidden h-9 w-9 items-center justify-center rounded-full transition sm:inline-flex ${
                 transparent
                   ? "bg-white/20 text-white hover:bg-white hover:text-green-950"
                   : "bg-green-700 text-white hover:bg-green-800"
               }`}
+              aria-label="Admin login"
             >
-              <LogIn size={18} />
-              <span className="hidden sm:inline">Login</span>
+              <UserCircle size={20} />
             </Link>
 
             <button
@@ -273,7 +273,7 @@ export default function Navbar() {
                   : "bg-green-700 text-white"
               }`}
             >
-              <LogIn size={18} />
+              <UserCircle size={18} />
               Login
             </Link>
           </nav>

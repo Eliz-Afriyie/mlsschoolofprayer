@@ -24,13 +24,13 @@ export default function AboutPreview() {
 
         <div>
           <p className="mb-4 text-sm font-semibold uppercase tracking-[3px] text-green-700">
-            About Prophet Lingston
+            About Prophet Livingston
           </p>
           <h2 className="text-2xl font-bold leading-tight text-gray-950 sm:text-3xl md:text-4xl">
             A voice of prayer, biblical direction, and spiritual growth.
           </h2>
           <p className="mt-5 text-base leading-7 text-gray-600 sm:text-lg sm:leading-8">
-            Prophet Lingston is an associate pastor at Fountain Gate Chapel
+            Prophet Livingston is an associate pastor at Fountain Gate Chapel
             International, Desert Pastures. Through the School of Prayer, he
             equips believers with strategic prayer education, biblical
             devotionals, and practical direction for a stronger walk with God.
