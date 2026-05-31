@@ -1,7 +1,13 @@
 "use client";
 
 import { useState } from "react";
-import { BookOpen, FileText, LayoutDashboard, Pencil, Trash2 } from "lucide-react";
+import {
+  BookOpen,
+  FileText,
+  LayoutDashboard,
+  Pencil,
+  Trash2,
+} from "lucide-react";
 import type { Book, Devotional } from "@/app/lib/types";
 import AdminForms from "./AdminForms";
 import {
@@ -49,8 +55,8 @@ export default function AdminDashboard({ books, devotionals }: Props) {
 
   return (
     <main className="min-h-screen bg-[#F7F8F5]">
-      <div className="mx-auto grid max-w-7xl gap-6 px-6 py-8 lg:grid-cols-[240px_1fr]">
-        <aside className="flex min-h-[calc(100vh-8rem)] flex-col rounded-2xl border border-gray-200 bg-white p-4 shadow-sm lg:sticky lg:top-20">
+      <div className="mx-auto grid max-w-7xl gap-6 px-4 py-6 sm:px-6 sm:py-8 lg:grid-cols-[240px_1fr]">
+        <aside className="flex flex-col rounded-2xl border border-gray-200 bg-white p-4 shadow-sm lg:sticky lg:top-20 lg:min-h-[calc(100vh-8rem)]">
           <div>
             <div className="mb-8 rounded-2xl bg-green-900 p-4 text-white">
               <p className="text-xs font-semibold uppercase tracking-[3px] text-amber-300">
@@ -60,7 +66,7 @@ export default function AdminDashboard({ books, devotionals }: Props) {
               <p className="mt-2 text-sm text-white/65">Manage uploads</p>
             </div>
 
-            <nav className="grid gap-2">
+            <nav className="grid gap-2 sm:grid-cols-3 lg:grid-cols-1">
               {menu.map((item) => {
                 const Icon = item.icon;
                 const active = section === item.id;
@@ -84,7 +90,10 @@ export default function AdminDashboard({ books, devotionals }: Props) {
             </nav>
           </div>
 
-          <form action={logoutAdmin} className="mt-auto border-t border-gray-100 pt-4">
+          <form
+            action={logoutAdmin}
+            className="mt-4 border-t border-gray-100 pt-4 lg:mt-auto"
+          >
             <button className="w-full rounded-xl border border-gray-200 px-3 py-2 text-sm font-semibold text-gray-700 transition hover:bg-gray-100">
               Sign Out
             </button>
@@ -100,7 +109,8 @@ export default function AdminDashboard({ books, devotionals }: Props) {
                 </p>
                 <h2 className="mt-3 text-3xl font-bold">Manage uploads</h2>
                 <p className="mt-3 max-w-2xl text-white/75">
-                  Create, review, edit, and delete uploaded devotionals and books.
+                  Create, review, edit, and delete uploaded devotionals and
+                  books.
                 </p>
               </div>
 
@@ -128,13 +138,20 @@ export default function AdminDashboard({ books, devotionals }: Props) {
               <h2 className="mb-5 text-2xl font-bold">Devotionals</h2>
               <div className="grid gap-4">
                 {devotionals.map((item) => (
-                  <details key={item.id} className="rounded-xl border border-gray-200 p-4">
+                  <details
+                    key={item.id}
+                    className="rounded-xl border border-gray-200 p-4"
+                  >
                     <summary className="cursor-pointer list-none font-semibold">
                       {item.title}
                     </summary>
                     <form action={editDevotional} className="mt-4 grid gap-3">
                       <input type="hidden" name="id" value={item.id} />
-                      <input type="hidden" name="currentImage" value={item.image} />
+                      <input
+                        type="hidden"
+                        name="currentImage"
+                        value={item.image}
+                      />
                       <Input name="title" defaultValue={item.title} />
                       <div className="grid gap-3 md:grid-cols-3">
                         <Input name="category" defaultValue={item.category} />
@@ -166,7 +183,9 @@ export default function AdminDashboard({ books, devotionals }: Props) {
                     </form>
                   </details>
                 ))}
-                {!devotionals.length ? <p className="text-gray-500">No uploaded devotionals yet.</p> : null}
+                {!devotionals.length ? (
+                  <p className="text-gray-500">No uploaded devotionals yet.</p>
+                ) : null}
               </div>
             </div>
           ) : null}
@@ -176,19 +195,30 @@ export default function AdminDashboard({ books, devotionals }: Props) {
               <h2 className="mb-5 text-2xl font-bold">Books</h2>
               <div className="grid gap-4">
                 {books.map((item) => (
-                  <details key={item.id} className="rounded-xl border border-gray-200 p-4">
+                  <details
+                    key={item.id}
+                    className="rounded-xl border border-gray-200 p-4"
+                  >
                     <summary className="cursor-pointer list-none font-semibold">
                       {item.title}
                     </summary>
                     <form action={editBook} className="mt-4 grid gap-3">
                       <input type="hidden" name="id" value={item.id} />
-                      <input type="hidden" name="currentImage" value={item.image} />
+                      <input
+                        type="hidden"
+                        name="currentImage"
+                        value={item.image}
+                      />
                       <Input name="title" defaultValue={item.title} />
                       <Input name="author" defaultValue={item.author} />
                       <div className="grid gap-3 md:grid-cols-3">
                         <Input name="category" defaultValue={item.category} />
                         <Input name="price" defaultValue={item.price} />
-                        <Input name="rating" defaultValue={item.rating} type="number" />
+                        <Input
+                          name="rating"
+                          defaultValue={item.rating}
+                          type="number"
+                        />
                       </div>
                       <textarea
                         name="description"
@@ -211,7 +241,9 @@ export default function AdminDashboard({ books, devotionals }: Props) {
                     </form>
                   </details>
                 ))}
-                {!books.length ? <p className="text-gray-500">No uploaded books yet.</p> : null}
+                {!books.length ? (
+                  <p className="text-gray-500">No uploaded books yet.</p>
+                ) : null}
               </div>
             </div>
           ) : null}

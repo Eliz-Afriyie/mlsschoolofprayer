@@ -41,7 +41,7 @@ export default function BooksBrowser({ books }: { books: Book[] }) {
 
   return (
     <>
-      <div className="mx-auto max-w-7xl px-6">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6">
         <div className="relative z-30 -mt-8 rounded-2xl border border-gray-200 bg-white p-3 shadow-sm">
           <div className="grid gap-3 md:grid-cols-[1fr_auto] md:items-center">
             <div className="flex h-12 items-center gap-3 rounded-xl bg-[#F7F8F5] px-4">
@@ -62,7 +62,7 @@ export default function BooksBrowser({ books }: { books: Book[] }) {
         </div>
       </div>
 
-      <section className="mx-auto max-w-7xl px-6 py-12">
+      <section className="mx-auto max-w-7xl px-4 py-10 sm:px-6 sm:py-12">
         {filteredBooks.length ? (
           <>
             <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">

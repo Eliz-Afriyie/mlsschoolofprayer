@@ -3,14 +3,13 @@
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { FormEvent, useEffect, useState } from "react";
-import { LogIn, Search, X } from "lucide-react";
+import { LogIn, Menu, Search, X } from "lucide-react";
 
 const navLinks = [
   { name: "Home", href: "/" },
   { name: "About", href: "/about" },
   { name: "Devotionals", href: "/devotional" },
   { name: "Books", href: "/books" },
-  { name: "Articles", href: "/articles" },
   { name: "Contact", href: "/contact" },
 ];
 
@@ -18,6 +17,7 @@ export default function Navbar() {
   const pathname = usePathname();
   const router = useRouter();
   const [searchOpen, setSearchOpen] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
   const [query, setQuery] = useState("");
   const [scrolled, setScrolled] = useState(false);
   const isHome = pathname === "/";
@@ -41,6 +41,7 @@ export default function Navbar() {
     }
 
     setSearchOpen(false);
+    setMenuOpen(false);
     router.push(`/search?q=${encodeURIComponent(trimmedQuery)}`);
   }
 
@@ -54,9 +55,9 @@ export default function Navbar() {
           : "border-b border-gray-200 bg-white text-gray-900 shadow-sm"
       }`}
     >
-      <div className="mx-auto max-w-7xl px-6">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6">
         <div className="flex h-16 items-center justify-between">
-          <Link href="/" className="flex items-center gap-3">
+          <Link href="/" className="flex min-w-0 items-center gap-3">
             <div
               className={`flex h-9 w-9 items-center justify-center rounded-full font-bold transition ${
                 transparent
@@ -67,9 +68,9 @@ export default function Navbar() {
               +
             </div>
 
-            <div>
+            <div className="min-w-0">
               <h1
-                className={`text-lg font-bold ${
+                className={`truncate text-base font-bold sm:text-lg ${
                   transparent ? "text-white" : "text-[#17361D]"
                 }`}
               >
@@ -77,7 +78,7 @@ export default function Navbar() {
               </h1>
 
               <p
-                className={`text-xs ${
+                className={`hidden text-xs sm:block ${
                   transparent ? "text-white/75" : "text-gray-500"
                 }`}
               >
@@ -100,8 +101,8 @@ export default function Navbar() {
                         ? "text-amber-300"
                         : "text-green-700"
                       : transparent
-                      ? "text-white/85 hover:text-white"
-                      : "text-gray-700 hover:text-green-700"
+                        ? "text-white/85 hover:text-white"
+                        : "text-gray-700 hover:text-green-700"
                   }`}
                 >
                   {link.name}
@@ -115,7 +116,7 @@ export default function Navbar() {
             })}
           </nav>
 
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2 sm:gap-3">
             <form
               onSubmit={handleSearch}
               className={`hidden items-center overflow-hidden rounded-full border transition-all md:flex ${
@@ -178,7 +179,7 @@ export default function Navbar() {
 
             <Link
               href="/admin/login"
-              className={`inline-flex h-9 items-center gap-2 rounded-xl px-3 text-sm font-medium transition ${
+              className={`hidden h-9 items-center gap-2 rounded-xl px-3 text-sm font-medium transition sm:inline-flex ${
                 transparent
                   ? "bg-white/20 text-white hover:bg-white hover:text-green-950"
                   : "bg-green-700 text-white hover:bg-green-800"
@@ -187,6 +188,18 @@ export default function Navbar() {
               <LogIn size={18} />
               <span className="hidden sm:inline">Login</span>
             </Link>
+
+            <button
+              type="button"
+              onClick={() => setMenuOpen((open) => !open)}
+              className={`flex h-9 w-9 items-center justify-center rounded-full transition lg:hidden ${
+                transparent ? "hover:bg-white/10" : "hover:bg-gray-100"
+              }`}
+              aria-label="Open menu"
+              aria-expanded={menuOpen}
+            >
+              {menuOpen ? <X size={21} /> : <Menu size={21} />}
+            </button>
           </div>
         </div>
       </div>
@@ -217,6 +230,54 @@ export default function Navbar() {
             />
           </div>
         </form>
+      ) : null}
+
+      {menuOpen ? (
+        <div
+          className={`border-t px-4 py-4 lg:hidden ${
+            transparent
+              ? "border-white/15 bg-black/80"
+              : "border-gray-200 bg-white"
+          }`}
+        >
+          <nav className="grid gap-2">
+            {navLinks.map((link) => {
+              const isActive = pathname === link.href;
+
+              return (
+                <Link
+                  key={link.name}
+                  href={link.href}
+                  onClick={() => setMenuOpen(false)}
+                  className={`rounded-xl px-4 py-3 text-sm font-semibold transition ${
+                    isActive
+                      ? transparent
+                        ? "bg-white/15 text-amber-300"
+                        : "bg-green-50 text-green-800"
+                      : transparent
+                        ? "text-white/85 hover:bg-white/10"
+                        : "text-gray-700 hover:bg-gray-100"
+                  }`}
+                >
+                  {link.name}
+                </Link>
+              );
+            })}
+
+            <Link
+              href="/admin/login"
+              onClick={() => setMenuOpen(false)}
+              className={`mt-2 inline-flex items-center justify-center gap-2 rounded-xl px-4 py-3 text-sm font-semibold transition ${
+                transparent
+                  ? "bg-white text-green-950"
+                  : "bg-green-700 text-white"
+              }`}
+            >
+              <LogIn size={18} />
+              Login
+            </Link>
+          </nav>
+        </div>
       ) : null}
     </header>
   );

@@ -21,22 +21,22 @@ const highlights = [
 export default function AboutPage() {
   return (
     <main className="min-h-screen bg-[#F7F8F5]">
-      <section className="bg-green-900 px-6 py-24 text-white">
+      <section className="bg-green-900 px-4 py-16 text-white sm:px-6 sm:py-24">
         <div className="mx-auto max-w-7xl">
           <p className="mb-4 text-sm font-semibold uppercase tracking-[3px] text-amber-300">
             About the Founder
           </p>
-          <h1 className="text-5xl font-bold md:text-6xl">
+          <h1 className="text-4xl font-bold sm:text-5xl md:text-6xl">
             Prophet Lingston
           </h1>
-          <p className="mt-6 max-w-3xl text-lg leading-8 text-gray-200">
+          <p className="mt-6 max-w-3xl text-base leading-7 text-gray-200 sm:text-lg sm:leading-8">
             Associate pastor at Fountain Gate Chapel International, Desert
             Pastures, and the voice behind the School of Prayer.
           </p>
         </div>
       </section>
 
-      <section className="mx-auto grid max-w-7xl gap-12 px-6 py-20 lg:grid-cols-[0.7fr_1.3fr] lg:items-start">
+      <section className="mx-auto grid max-w-7xl gap-10 px-4 py-14 sm:px-6 sm:py-20 lg:grid-cols-[0.7fr_1.3fr] lg:items-start">
         <div className="mx-auto w-full max-w-sm overflow-hidden rounded-2xl bg-green-950 text-white shadow-sm">
           <div className="flex aspect-[4/5] min-h-[340px] items-center justify-center p-6">
             <div className="text-center">
@@ -54,16 +54,16 @@ export default function AboutPage() {
         </div>
 
         <div>
-          <h2 className="text-3xl font-bold text-gray-950">
+          <h2 className="text-2xl font-bold text-gray-950 sm:text-3xl">
             About Prophet Lingston
           </h2>
-          <p className="mt-5 text-lg leading-8 text-gray-700">
+          <p className="mt-5 text-base leading-7 text-gray-700 sm:text-lg sm:leading-8">
             Prophet Lingston is an associate pastor at Fountain Gate Chapel
             International, Desert Pastures. His ministry is centered on helping
             believers grow in prayer, receive biblical direction, and walk with
             spiritual discipline and confidence.
           </p>
-          <p className="mt-5 text-lg leading-8 text-gray-700">
+          <p className="mt-5 text-base leading-7 text-gray-700 sm:text-lg sm:leading-8">
             Through the School of Prayer, he provides strategic prayer
             education, devotionals, teachings, and faith-building resources for
             the body of Christ.

@@ -24,7 +24,7 @@ export default function BookCard({
         <img
           src={image}
           alt={title}
-          className="w-full h-72 object-cover rounded-2xl"
+          className="h-64 w-full rounded-2xl object-cover sm:h-72"
         />
       </div>
 
@@ -36,7 +36,9 @@ export default function BookCard({
         </span>
 
         {/* Title */}
-        <h3 className="font-semibold text-xl mt-4 leading-7">{title}</h3>
+        <h3 className="mt-4 text-lg font-semibold leading-7 sm:text-xl">
+          {title}
+        </h3>
 
         {/* Author */}
         <p className="text-gray-500 mt-2">by {author}</p>

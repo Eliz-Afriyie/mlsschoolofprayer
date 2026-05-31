@@ -47,7 +47,7 @@ export default function Hero() {
 
   return (
     <section className="w-full">
-      <div className="relative h-150 overflow-hidden">
+      <div className="relative h-[560px] overflow-hidden sm:h-[620px] lg:h-[650px]">
         {/* Slides */}
         {slides.map((slide, index) => (
           <div
@@ -68,30 +68,30 @@ export default function Hero() {
             <div className="absolute inset-0 bg-black/50" />
 
             {/* Content */}
-            <div className="relative z-20 h-full flex items-center">
-              <div className="max-w-2xl px-10 md:px-16 text-white">
+            <div className="relative z-20 flex h-full items-center">
+              <div className="max-w-2xl px-5 pt-12 text-white sm:px-10 md:px-16">
                 {/* Verse */}
-                <h1 className="text-4xl md:text-6xl font-bold leading-tight mb-6 animate-fadeInUp">
+                <h1 className="mb-5 text-3xl font-bold leading-tight animate-fadeInUp sm:text-4xl md:mb-6 md:text-6xl">
                   {slide.verse}
                 </h1>
 
                 {/* Scripture */}
-                <p className="text-amber-400 uppercase tracking-[3px] text-sm md:text-base mb-6 animate-fadeInUp delay-100">
+                <p className="mb-5 text-sm uppercase tracking-[3px] text-amber-400 animate-fadeInUp delay-100 md:mb-6 md:text-base">
                   {slide.scripture}
                 </p>
 
                 {/* Description */}
-                <p className="text-lg md:text-xl text-gray-200 leading-8 mb-8 animate-fadeInUp delay-200">
+                <p className="mb-7 text-base leading-7 text-gray-200 animate-fadeInUp delay-200 md:mb-8 md:text-xl md:leading-8">
                   {slide.description}
                 </p>
 
                 {/* Buttons */}
-                <div className="flex flex-wrap gap-4 animate-fadeInUp delay-300">
-                  <button className="bg-green-700 hover:bg-green-800 px-8 py-4 rounded-2xl font-semibold transition">
+                <div className="flex flex-col gap-3 animate-fadeInUp delay-300 sm:flex-row sm:flex-wrap sm:gap-4">
+                  <button className="rounded-xl bg-green-700 px-6 py-3 font-semibold transition hover:bg-green-800 sm:rounded-2xl sm:px-8 sm:py-4">
                     <Link href="/devotional">Start Reading</Link>
                   </button>
 
-                  <button className="border border-white/40 hover:bg-white hover:text-black px-8 py-4 rounded-2xl font-semibold transition">
+                  <button className="rounded-xl border border-white/40 px-6 py-3 font-semibold transition hover:bg-white hover:text-black sm:rounded-2xl sm:px-8 sm:py-4">
                     <Link href="/books">Explore Books</Link>
                   </button>
                 </div>

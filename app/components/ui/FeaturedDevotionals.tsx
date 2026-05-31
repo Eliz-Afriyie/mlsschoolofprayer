@@ -6,16 +6,16 @@ export default async function FeaturedDevotionals() {
   const devotionals = await getDevotionals();
 
   return (
-    <section className="max-w-7xl mx-auto px-6">
-      <div className="flex items-center justify-between mb-8">
-        <h2 className="text-3xl font-bold">Latest Devotionals</h2>
+    <section className="mx-auto max-w-7xl px-4 sm:px-6">
+      <div className="mb-8 flex items-start justify-between gap-4">
+        <h2 className="text-2xl font-bold sm:text-3xl">Latest Devotionals</h2>
 
-        <button className="text-green-700 font-semibold">
+        <button className="shrink-0 text-sm font-semibold text-green-700 sm:text-base">
           <Link href="/devotional">View All →</Link>
         </button>
       </div>
 
-      <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
         {devotionals.slice(0, 4).map((item) => (
           <DevotionalCard
             key={item.id}

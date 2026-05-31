@@ -3,13 +3,13 @@ import Link from "next/link";
 export default function Footer() {
   return (
     <footer className="bg-[#0F2E14] text-white">
-      <div className="max-w-7xl mx-auto px-6 py-16 grid md:grid-cols-4 gap-10">
+      <div className="mx-auto grid max-w-7xl gap-10 px-4 py-12 sm:px-6 sm:py-16 md:grid-cols-2 lg:grid-cols-4">
         {/* Brand */}
         <div className="align-items-center">
           <img
             src="/devotional/devo6.jpg"
             alt="image"
-            className=" w-44 h-28 rounded-2xl align-items-center"
+            className="h-28 w-44 rounded-2xl object-cover"
           />
           <h2 className="text-2xl font-bold mb-4">mlsschoolofprayer</h2>
 

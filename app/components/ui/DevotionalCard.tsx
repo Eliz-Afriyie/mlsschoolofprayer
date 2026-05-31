@@ -22,7 +22,7 @@ export default function DevotionalCard({
         <img
           src={image}
           alt={title}
-          className="w-full h-56 object-cover rounded-2xl"
+          className="h-48 w-full rounded-2xl object-cover sm:h-56"
         />
       </div>
 
@@ -34,7 +34,9 @@ export default function DevotionalCard({
         </span>
 
         {/* Title */}
-        <h3 className="font-semibold text-xl mt-4 leading-8">{title}</h3>
+        <h3 className="mt-4 text-lg font-semibold leading-7 sm:text-xl sm:leading-8">
+          {title}
+        </h3>
 
         {/* Excerpt */}
         <p className="text-gray-600 mt-3 leading-7">{excerpt}</p>

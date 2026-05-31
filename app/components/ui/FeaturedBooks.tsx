@@ -6,18 +6,18 @@ export default async function FeaturedBooks() {
   const books = await getBooks();
 
   return (
-    <section className="max-w-7xl mx-auto px-6">
+    <section className="mx-auto max-w-7xl px-4 sm:px-6">
       {/* Header */}
-      <div className="flex items-center justify-between mb-8">
-        <h2 className="text-3xl font-bold">Featured Books</h2>
+      <div className="mb-8 flex items-start justify-between gap-4">
+        <h2 className="text-2xl font-bold sm:text-3xl">Featured Books</h2>
 
-        <button className="text-green-700 font-semibold">
+        <button className="shrink-0 text-sm font-semibold text-green-700 sm:text-base">
           <Link href="/books">View All →</Link>
         </button>
       </div>
 
       {/* Books Grid */}
-      <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
         {books.slice(0, 4).map((book) => (
           <BookCard
             key={book.id}
