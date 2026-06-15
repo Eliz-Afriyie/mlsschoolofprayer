@@ -21,8 +21,27 @@ const highlights = [
 export default function AboutPage() {
   return (
     <main className="min-h-screen bg-[#F7F8F5]">
-      <section className="bg-green-900 py-16 text-white sm:py-24">
-        <div className="site-container">
+      <section
+        className="relative overflow-hidden py-16 text-white sm:py-24"
+        style={{
+          backgroundImage: "url('/devotional/devo-hero.jpg')",
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+        }}
+      >
+        <video
+          autoPlay
+          muted
+          loop
+          playsInline
+          poster="/devotional/devo-hero.jpg"
+          className="absolute inset-0 h-full w-full object-cover"
+        >
+          <source src="/videos/about-bg.mp4" type="video/mp4" />
+        </video>
+        <div className="absolute inset-0 bg-gradient-to-r from-[#0B2D16]/95 via-[#0B2D16]/80 to-[#0B2D16]/35" />
+
+        <div className="site-container relative z-10">
           <p className="mb-4 text-sm font-semibold uppercase tracking-[3px] text-amber-300">
             About the Founder
           </p>
@@ -37,7 +56,7 @@ export default function AboutPage() {
       </section>
 
       <section className="site-container grid gap-10 py-14 sm:py-20 lg:grid-cols-[0.7fr_1.3fr] lg:items-start">
-        <div className="mx-auto w-full max-w-sm overflow-hidden rounded-2xl bg-green-950 text-white shadow-sm lg:mx-0">
+        <div className="w-full max-w-sm overflow-hidden rounded-2xl bg-green-950 text-white shadow-sm">
           <div className="flex aspect-[4/5] min-h-[340px] items-center justify-center p-6">
             <div className="text-center">
               <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-white/10">

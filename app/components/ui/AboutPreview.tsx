@@ -5,7 +5,7 @@ export default function AboutPreview() {
   return (
     <section className="site-container">
       <div className="grid gap-10 lg:grid-cols-[0.7fr_1.3fr] lg:items-center">
-        <div className="relative mx-auto w-full max-w-sm overflow-hidden rounded-2xl bg-green-950 text-white shadow-sm lg:mx-0">
+        <div className="relative w-full max-w-sm overflow-hidden rounded-2xl bg-green-950 text-white shadow-sm">
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(250,204,21,0.18),transparent_35%)]" />
           <div className="relative flex aspect-[4/5] min-h-[300px] items-center justify-center p-6">
             <div className="text-center">

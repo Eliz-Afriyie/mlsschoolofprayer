@@ -277,9 +277,12 @@ export default function Navbar() {
       </div>
 
       <div
-        className={`fixed inset-0 z-[70] bg-black/50 backdrop-blur-sm transition-opacity duration-300 lg:hidden ${
-          menuOpen ? "pointer-events-auto opacity-100" : "pointer-events-none opacity-0"
+        className={`fixed inset-0 z-[120] backdrop-blur-sm transition-opacity duration-300 lg:hidden ${
+          menuOpen
+            ? "pointer-events-auto opacity-100"
+            : "pointer-events-none opacity-0"
         }`}
+        style={{ backgroundColor: "rgba(0, 0, 0, 0.72)" }}
       >
         <button
           type="button"
@@ -289,7 +292,7 @@ export default function Navbar() {
         />
 
         <div
-          className={`absolute right-0 top-0 flex h-full w-[min(84vw,360px)] flex-col bg-white p-5 text-gray-950 shadow-2xl transition-transform duration-300 ${
+          className={`fixed right-0 top-0 z-[130] flex h-dvh min-h-screen w-[88vw] max-w-sm flex-col overflow-y-auto bg-white p-5 text-gray-950 shadow-2xl transition-transform duration-300 ${
             menuOpen ? "translate-x-0" : "translate-x-full"
           }`}
         >
