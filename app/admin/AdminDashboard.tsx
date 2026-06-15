@@ -1,27 +1,33 @@
 "use client";
 
-import type { ReactNode } from "react";
 import { useState } from "react";
 import {
   BookOpen,
+  CalendarDays,
   FileText,
-  LayoutDashboard,
+  Menu,
   Pencil,
   Plus,
+  Search,
+  ShieldCheck,
   Trash2,
-  X,
 } from "lucide-react";
 import type { Book, Devotional } from "@/app/lib/types";
 import { BookCreateForm, DevotionalCreateForm } from "./AdminForms";
+import AdminSidebar, { type AdminSection } from "./AdminSidebar";
+import {
+  EmptyState,
+  Input,
+  ModalShell,
+  StatCard,
+} from "./AdminDashboardWidgets";
 import {
   editBook,
   editDevotional,
-  logoutAdmin,
   removeBook,
   removeDevotional,
 } from "./actions";
 
-type Section = "overview" | "devotionals" | "books";
 type Modal = "devotional" | "book" | null;
 
 type Props = {
@@ -29,63 +35,37 @@ type Props = {
   devotionals: Devotional[];
 };
 
-const menu = [
-  { id: "overview", label: "Overview", icon: LayoutDashboard },
-  { id: "devotionals", label: "Devotionals", icon: FileText },
-  { id: "books", label: "Books", icon: BookOpen },
-] as const;
-
-function Input({
-  name,
-  defaultValue,
-  type = "text",
-}: {
-  name: string;
-  defaultValue: string | number;
-  type?: string;
-}) {
-  return (
-    <input
-      name={name}
-      type={type}
-      defaultValue={defaultValue}
-      className="h-10 rounded-lg border border-gray-200 px-3 text-sm outline-none focus:border-green-700"
-    />
-  );
-}
-
-function ModalShell({
-  title,
-  onClose,
-  children,
-}: {
-  title: string;
-  onClose: () => void;
-  children: ReactNode;
-}) {
-  return (
-    <div className="fixed inset-0 z-[80] flex items-center justify-center bg-black/55 px-4 py-6">
-      <div className="max-h-[90vh] w-full max-w-2xl overflow-y-auto rounded-2xl bg-white p-5 shadow-2xl sm:p-6">
-        <div className="mb-5 flex items-center justify-between gap-4 border-b border-gray-100 pb-4">
-          <h2 className="text-xl font-bold text-gray-950">{title}</h2>
-          <button
-            type="button"
-            onClick={onClose}
-            className="flex h-9 w-9 items-center justify-center rounded-full bg-gray-100 text-gray-700 transition hover:bg-gray-200"
-            aria-label="Close"
-          >
-            <X size={18} />
-          </button>
-        </div>
-        {children}
-      </div>
-    </div>
-  );
-}
-
 export default function AdminDashboard({ books, devotionals }: Props) {
-  const [section, setSection] = useState<Section>("overview");
+  const [section, setSection] = useState<AdminSection>("overview");
   const [modal, setModal] = useState<Modal>(null);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [devotionalQuery, setDevotionalQuery] = useState("");
+  const [bookQuery, setBookQuery] = useState("");
+  const today = new Intl.DateTimeFormat("en", {
+    month: "long",
+    day: "numeric",
+    year: "numeric",
+  }).format(new Date());
+  const filteredDevotionals = devotionals.filter((item) =>
+    [item.title, item.category, item.author, item.scripture, item.pdfUrl]
+      .join(" ")
+      .toLowerCase()
+      .includes(devotionalQuery.trim().toLowerCase())
+  );
+  const filteredBooks = books.filter((item) =>
+    [
+      item.title,
+      item.author,
+      item.category,
+      item.price,
+      item.excerpt,
+      item.amazonUrl,
+    ]
+      .join(" ")
+      .toLowerCase()
+      .includes(bookQuery.trim().toLowerCase())
+  );
+  const booksWithAmazonLinks = books.filter((item) => item.amazonUrl).length;
   const recentItems = [
     ...devotionals.slice(0, 3).map((item) => ({
       type: "Devotional",
@@ -101,94 +81,67 @@ export default function AdminDashboard({ books, devotionals }: Props) {
 
   return (
     <main className="min-h-screen bg-[#F7F8F5]">
-      <div className="mx-auto grid max-w-7xl gap-6 px-4 py-6 sm:px-6 sm:py-8 lg:grid-cols-[240px_1fr]">
-        <aside className="flex flex-col rounded-2xl border border-gray-200 bg-white p-4 shadow-sm lg:sticky lg:top-0 lg:h-screen lg:rounded-none lg:border-y-0">
-          <div>
-            <div className="mb-8 rounded-2xl bg-green-900 p-4 text-white">
-              <p className="text-xs font-semibold uppercase tracking-[3px] text-amber-300">
-                Admin
-              </p>
-              <h1 className="mt-2 text-2xl font-bold">Content</h1>
-              <p className="mt-2 text-sm text-white/65">Manage uploads</p>
-            </div>
+      <div className="grid min-h-screen gap-6 px-4 py-5 sm:px-6 lg:grid-cols-[280px_1fr] lg:px-0 lg:py-0">
+        <AdminSidebar
+          section={section}
+          setSection={setSection}
+          open={sidebarOpen}
+          onClose={() => setSidebarOpen(false)}
+        />
 
-            <nav className="grid gap-2 sm:grid-cols-3 lg:grid-cols-1">
-              {menu.map((item) => {
-                const Icon = item.icon;
-                const active = section === item.id;
-
-                return (
-                  <button
-                    key={item.id}
-                    type="button"
-                    onClick={() => setSection(item.id)}
-                    className={`flex h-12 items-center gap-3 rounded-xl px-3 text-left font-medium transition ${
-                      active
-                        ? "bg-green-700 text-white"
-                        : "text-gray-700 hover:bg-gray-100"
-                    }`}
-                  >
-                    <Icon size={18} />
-                    {item.label}
-                  </button>
-                );
-              })}
-            </nav>
-          </div>
-
-          <form
-            action={logoutAdmin}
-            className="mt-4 border-t border-gray-100 pt-4 lg:mt-auto"
+        <section className="min-w-0 py-2 lg:py-8 lg:pr-8">
+          <button
+            type="button"
+            onClick={() => setSidebarOpen(true)}
+            className="mb-4 inline-flex items-center gap-2 rounded-xl bg-green-700 px-4 py-3 text-sm font-semibold text-white shadow-sm lg:hidden"
           >
-            <button className="w-full rounded-xl border border-gray-200 px-3 py-2 text-sm font-semibold text-gray-700 transition hover:bg-gray-100">
-              Sign Out
-            </button>
-          </form>
-        </aside>
-
-        <section className="min-w-0">
+            <Menu size={18} />
+            Menu
+          </button>
           {section === "overview" ? (
             <div className="grid gap-6">
               <div className="rounded-2xl bg-green-900 p-7 text-white">
-                <p className="text-sm font-semibold uppercase tracking-[3px] text-amber-300">
-                  Dashboard
-                </p>
-                <h2 className="mt-3 text-3xl font-bold">Manage uploads</h2>
-                <p className="mt-3 max-w-2xl text-white/75">
-                  Create, review, edit, and delete uploaded devotionals and
-                  books.
-                </p>
+                <div className="flex flex-col gap-5 md:flex-row md:items-end md:justify-between">
+                  <div>
+                    <p className="text-sm font-semibold uppercase tracking-[3px] text-amber-300">
+                      Dashboard
+                    </p>
+                    <h2 className="mt-3 text-3xl font-bold">
+                      Manage uploads
+                    </h2>
+                    <p className="mt-3 max-w-2xl text-white/75">
+                      Create, review, edit, and delete uploaded devotionals and
+                      books.
+                    </p>
+                  </div>
+                  <div className="inline-flex w-fit items-center gap-2 rounded-full bg-white/10 px-4 py-2 text-sm text-white/80">
+                    <CalendarDays size={16} />
+                    {today}
+                  </div>
+                </div>
               </div>
 
               <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
-                <div className="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm">
-                  <p className="text-sm font-medium text-gray-500">
-                    Uploaded Devotionals
-                  </p>
-                  <p className="mt-2 text-3xl font-bold">{devotionals.length}</p>
-                </div>
-                <div className="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm">
-                  <p className="text-sm font-medium text-gray-500">
-                    Uploaded Books
-                  </p>
-                  <p className="mt-2 text-3xl font-bold">{books.length}</p>
-                </div>
-                <div className="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm">
-                  <p className="text-sm font-medium text-gray-500">
-                    Total Uploads
-                  </p>
-                  <p className="mt-2 text-3xl font-bold">
-                    {books.length + devotionals.length}
-                  </p>
-                </div>
-                <div className="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm">
-                  <p className="text-sm font-medium text-gray-500">
-                    Storage Mode
-                  </p>
-                  <p className="mt-3 rounded-full bg-amber-50 px-3 py-1 text-sm font-semibold text-amber-800">
-                    Local demo
-                  </p>
-                </div>
+                <StatCard
+                  icon={<FileText size={20} />}
+                  label="Devotionals Published"
+                  value={devotionals.length}
+                />
+                <StatCard
+                  icon={<BookOpen size={20} />}
+                  label="Books Listed"
+                  value={books.length}
+                />
+                <StatCard
+                  icon={<Plus size={20} />}
+                  label="Total Content"
+                  value={books.length + devotionals.length}
+                />
+                <StatCard
+                  icon={<ShieldCheck size={20} />}
+                  label="Amazon Links"
+                  value={booksWithAmazonLinks}
+                />
               </div>
 
               <div className="grid gap-6 lg:grid-cols-[1fr_0.8fr]">
@@ -246,9 +199,10 @@ export default function AdminDashboard({ books, devotionals }: Props) {
                         </div>
                       ))
                     ) : (
-                      <p className="text-sm text-gray-500">
-                        No uploads yet. Add your first devotional or book.
-                      </p>
+                      <EmptyState
+                        title="No uploads yet"
+                        text="Start by adding a devotional or book from Quick Actions."
+                      />
                     )}
                   </div>
                 </div>
@@ -274,8 +228,18 @@ export default function AdminDashboard({ books, devotionals }: Props) {
                   Add New
                 </button>
               </div>
+              <label className="mb-5 flex h-12 items-center gap-3 rounded-xl bg-[#F7F8F5] px-4 text-gray-600">
+                <Search size={18} />
+                <input
+                  type="search"
+                  value={devotionalQuery}
+                  onChange={(event) => setDevotionalQuery(event.target.value)}
+                  placeholder="Search devotionals by title, author, scripture..."
+                  className="min-w-0 flex-1 bg-transparent text-sm text-gray-900 outline-none placeholder:text-gray-400"
+                />
+              </label>
               <div className="grid gap-4">
-                {devotionals.map((item) => (
+                {filteredDevotionals.map((item) => (
                   <details
                     key={item.id}
                     className="rounded-xl border border-gray-200 p-4"
@@ -289,6 +253,11 @@ export default function AdminDashboard({ books, devotionals }: Props) {
                         type="hidden"
                         name="currentImage"
                         value={item.image}
+                      />
+                      <input
+                        type="hidden"
+                        name="currentPdf"
+                        value={item.pdfUrl ?? ""}
                       />
                       <Input name="title" defaultValue={item.title} />
                       <div className="grid gap-3 md:grid-cols-3">
@@ -305,6 +274,21 @@ export default function AdminDashboard({ books, devotionals }: Props) {
                         className="rounded-lg border border-gray-200 px-3 py-2 text-sm outline-none focus:border-green-700"
                       />
                       <Input name="image" defaultValue="" type="file" />
+                      <Input
+                        name="pdf"
+                        defaultValue=""
+                        type="file"
+                        accept="application/pdf"
+                      />
+                      {item.pdfUrl ? (
+                        <a
+                          href={item.pdfUrl}
+                          className="text-sm font-semibold text-green-700"
+                          target="_blank"
+                        >
+                          View current PDF
+                        </a>
+                      ) : null}
                       <div className="flex flex-wrap gap-2">
                         <button className="inline-flex items-center gap-2 rounded-lg bg-green-700 px-4 py-2 text-sm font-semibold text-white">
                           <Pencil size={16} />
@@ -314,15 +298,48 @@ export default function AdminDashboard({ books, devotionals }: Props) {
                     </form>
                     <form action={removeDevotional} className="mt-2">
                       <input type="hidden" name="id" value={item.id} />
-                      <button className="inline-flex items-center gap-2 rounded-lg border border-red-200 px-4 py-2 text-sm font-semibold text-red-700">
+                      <button
+                        onClick={(event) => {
+                          if (
+                            !confirm(
+                              `Delete devotional "${item.title}" permanently?`
+                            )
+                          ) {
+                            event.preventDefault();
+                          }
+                        }}
+                        className="inline-flex items-center gap-2 rounded-lg border border-red-200 px-4 py-2 text-sm font-semibold text-red-700"
+                      >
                         <Trash2 size={16} />
                         Delete
                       </button>
                     </form>
                   </details>
                 ))}
-                {!devotionals.length ? (
-                  <p className="text-gray-500">No uploaded devotionals yet.</p>
+                {!filteredDevotionals.length ? (
+                  <EmptyState
+                    title={
+                      devotionals.length
+                        ? "No devotionals matched"
+                        : "No devotionals yet"
+                    }
+                    text={
+                      devotionals.length
+                        ? "Try a different search term."
+                        : "Create your first devotional upload for the website."
+                    }
+                    action={
+                      !devotionals.length ? (
+                        <button
+                          type="button"
+                          onClick={() => setModal("devotional")}
+                          className="rounded-xl bg-green-700 px-4 py-2 text-sm font-semibold text-white"
+                        >
+                          Add Devotional
+                        </button>
+                      ) : null
+                    }
+                  />
                 ) : null}
               </div>
             </div>
@@ -346,8 +363,18 @@ export default function AdminDashboard({ books, devotionals }: Props) {
                   Add New
                 </button>
               </div>
+              <label className="mb-5 flex h-12 items-center gap-3 rounded-xl bg-[#F7F8F5] px-4 text-gray-600">
+                <Search size={18} />
+                <input
+                  type="search"
+                  value={bookQuery}
+                  onChange={(event) => setBookQuery(event.target.value)}
+                  placeholder="Search books by title, author, category..."
+                  className="min-w-0 flex-1 bg-transparent text-sm text-gray-900 outline-none placeholder:text-gray-400"
+                />
+              </label>
               <div className="grid gap-4">
-                {books.map((item) => (
+                {filteredBooks.map((item) => (
                   <details
                     key={item.id}
                     className="rounded-xl border border-gray-200 p-4"
@@ -373,6 +400,17 @@ export default function AdminDashboard({ books, devotionals }: Props) {
                           type="number"
                         />
                       </div>
+                      <Input
+                        name="amazonUrl"
+                        defaultValue={item.amazonUrl ?? ""}
+                        type="url"
+                      />
+                      <textarea
+                        name="excerpt"
+                        defaultValue={item.excerpt ?? ""}
+                        rows={2}
+                        className="rounded-lg border border-gray-200 px-3 py-2 text-sm outline-none focus:border-green-700"
+                      />
                       <textarea
                         name="description"
                         defaultValue={item.description}
@@ -387,15 +425,42 @@ export default function AdminDashboard({ books, devotionals }: Props) {
                     </form>
                     <form action={removeBook} className="mt-2">
                       <input type="hidden" name="id" value={item.id} />
-                      <button className="inline-flex items-center gap-2 rounded-lg border border-red-200 px-4 py-2 text-sm font-semibold text-red-700">
+                      <button
+                        onClick={(event) => {
+                          if (
+                            !confirm(`Delete book "${item.title}" permanently?`)
+                          ) {
+                            event.preventDefault();
+                          }
+                        }}
+                        className="inline-flex items-center gap-2 rounded-lg border border-red-200 px-4 py-2 text-sm font-semibold text-red-700"
+                      >
                         <Trash2 size={16} />
                         Delete
                       </button>
                     </form>
                   </details>
                 ))}
-                {!books.length ? (
-                  <p className="text-gray-500">No uploaded books yet.</p>
+                {!filteredBooks.length ? (
+                  <EmptyState
+                    title={books.length ? "No books matched" : "No books yet"}
+                    text={
+                      books.length
+                        ? "Try a different search term."
+                        : "Create your first book upload for the website."
+                    }
+                    action={
+                      !books.length ? (
+                        <button
+                          type="button"
+                          onClick={() => setModal("book")}
+                          className="rounded-xl bg-green-700 px-4 py-2 text-sm font-semibold text-white"
+                        >
+                          Add Book
+                        </button>
+                      ) : null
+                    }
+                  />
                 ) : null}
               </div>
             </div>

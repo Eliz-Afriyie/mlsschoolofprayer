@@ -7,6 +7,8 @@ export type Book = {
   category: string;
   price: string;
   description: string;
+  excerpt?: string;
+  amazonUrl?: string;
 };
 
 export type Devotional = {
@@ -19,6 +21,7 @@ export type Devotional = {
   author: string;
   scripture: string;
   excerpt: string;
+  pdfUrl?: string;
 };
 
 export type UploadedContent = {

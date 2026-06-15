@@ -120,6 +120,7 @@ export default function DevotionalBrowser({
                   date={item.date}
                   readTime={item.readTime}
                   excerpt={item.excerpt}
+                  pdfUrl={item.pdfUrl}
                 />
               ))}
             </div>

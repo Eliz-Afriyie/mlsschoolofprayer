@@ -5,6 +5,7 @@ type Props = {
   date: string;
   readTime: string;
   excerpt: string;
+  pdfUrl?: string;
 };
 
 export default function DevotionalCard({
@@ -14,6 +15,7 @@ export default function DevotionalCard({
   date,
   readTime,
   excerpt,
+  pdfUrl,
 }: Props) {
   return (
     <div className="bg-white rounded-3xl overflow-hidden border border-gray-100 shadow hover:shadow-2xl transition pointer">
@@ -46,6 +48,15 @@ export default function DevotionalCard({
           <p>{date}</p>
           <p>{readTime}</p>
         </div>
+        {pdfUrl ? (
+          <a
+            href={pdfUrl}
+            download
+            className="mt-4 inline-flex rounded-xl bg-green-700 px-4 py-2 text-sm font-semibold text-white transition hover:bg-green-800"
+          >
+            Download PDF
+          </a>
+        ) : null}
       </div>
     </div>
   );

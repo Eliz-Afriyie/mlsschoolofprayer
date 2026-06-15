@@ -25,6 +25,7 @@ export default async function FeaturedDevotionals() {
             date={item.date}
             readTime={item.readTime}
             excerpt={item.excerpt}
+            pdfUrl={item.pdfUrl}
           />
         ))}
       </div>

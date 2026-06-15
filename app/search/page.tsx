@@ -100,6 +100,7 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
                   date={item.date}
                   readTime={item.readTime}
                   excerpt={item.excerpt}
+                  pdfUrl={item.pdfUrl}
                 />
               ))}
             </div>

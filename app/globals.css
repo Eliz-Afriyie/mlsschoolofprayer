@@ -27,6 +27,24 @@ body {
   background: rgba(7, 23, 57, 0.7);
 }
 
+.thin-scrollbar {
+  scrollbar-color: rgba(21, 128, 61, 0.45) transparent;
+  scrollbar-width: thin;
+}
+
+.thin-scrollbar::-webkit-scrollbar {
+  width: 3px;
+}
+
+.thin-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.thin-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(21, 128, 61, 0.35);
+  border-radius: 999px;
+}
+
 @keyframes fadeInUp {
   from {
     opacity: 0;

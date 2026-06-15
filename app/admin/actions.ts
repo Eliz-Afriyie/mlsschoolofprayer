@@ -66,6 +66,32 @@ async function saveImage(file: FormDataEntryValue | null, fallback: string) {
   return `/uploads/${filename}`;
 }
 
+async function savePdf(file: FormDataEntryValue | null, fallback = "") {
+  if (!(file instanceof File) || file.size === 0) {
+    return fallback;
+  }
+
+  if (file.type !== "application/pdf") {
+    throw new Error("Please upload a PDF file.");
+  }
+
+  if (file.size > 8 * 1024 * 1024) {
+    throw new Error("PDF files must be 8MB or smaller.");
+  }
+
+  const filename = `${Date.now()}-${Math.random()
+    .toString(36)
+    .slice(2)}.pdf`;
+  const uploadsDir = path.join(process.cwd(), "public", "uploads");
+  const destination = path.join(uploadsDir, filename);
+  const buffer = Buffer.from(await file.arrayBuffer());
+
+  await fs.mkdir(uploadsDir, { recursive: true });
+  await fs.writeFile(destination, buffer);
+
+  return `/uploads/${filename}`;
+}
+
 export async function loginAdmin(
   _previousState: AdminActionState,
   formData: FormData
@@ -102,9 +128,11 @@ export async function createBook(
     const category = text(formData, "category");
     const price = text(formData, "price");
     const rating = Number(text(formData, "rating") || "5");
+    const excerpt = text(formData, "excerpt");
     const description = text(formData, "description");
+    const amazonUrl = text(formData, "amazonUrl");
 
-    if (!title || !author || !category || !price || !description) {
+    if (!title || !author || !category || !price || !excerpt || !description) {
       return {
         ok: false,
         message: "Please fill in every required book field.",
@@ -119,7 +147,9 @@ export async function createBook(
       category,
       price,
       rating: Number.isFinite(rating) ? rating : 5,
+      excerpt,
       description,
+      amazonUrl,
       image,
     });
 
@@ -173,6 +203,7 @@ export async function createDevotional(
       formData.get("image"),
       defaultImage.devotional
     );
+    const pdfUrl = await savePdf(formData.get("pdf"));
 
     await addDevotional({
       title,
@@ -183,6 +214,7 @@ export async function createDevotional(
       scripture,
       excerpt,
       image,
+      pdfUrl,
     });
 
     revalidatePath("/");
@@ -217,7 +249,9 @@ export async function editBook(formData: FormData) {
     category: text(formData, "category"),
     price: text(formData, "price"),
     rating: Number.isFinite(rating) ? rating : 5,
+    excerpt: text(formData, "excerpt"),
     description: text(formData, "description"),
+    amazonUrl: text(formData, "amazonUrl"),
     image,
   });
 
@@ -232,7 +266,9 @@ export async function editDevotional(formData: FormData) {
   const id = Number(text(formData, "id"));
   const currentImage =
     text(formData, "currentImage") || defaultImage.devotional;
+  const currentPdf = text(formData, "currentPdf");
   const image = await saveImage(formData.get("image"), currentImage);
+  const pdfUrl = await savePdf(formData.get("pdf"), currentPdf);
 
   await updateDevotional(id, {
     title: text(formData, "title"),
@@ -243,6 +279,7 @@ export async function editDevotional(formData: FormData) {
     scripture: text(formData, "scripture"),
     excerpt: text(formData, "excerpt"),
     image,
+    pdfUrl,
   });
 
   revalidatePath("/");

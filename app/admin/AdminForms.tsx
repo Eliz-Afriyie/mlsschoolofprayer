@@ -18,12 +18,24 @@ function Field({
   type = "text",
   placeholder,
   required = true,
+  accept,
+  minLength,
+  maxLength,
+  min,
+  max,
+  step,
 }: {
   label: string;
   name: string;
   type?: string;
   placeholder?: string;
   required?: boolean;
+  accept?: string;
+  minLength?: number;
+  maxLength?: number;
+  min?: string;
+  max?: string;
+  step?: string;
 }) {
   return (
     <label className="grid gap-2 text-sm font-medium text-gray-700">
@@ -33,6 +45,12 @@ function Field({
         type={type}
         placeholder={placeholder}
         required={required}
+        accept={accept}
+        minLength={minLength}
+        maxLength={maxLength}
+        min={min}
+        max={max}
+        step={step}
         className="h-12 rounded-xl border border-gray-200 bg-white px-4 text-gray-900 outline-none transition focus:border-green-700 focus:ring-2 focus:ring-green-700/15"
       />
     </label>
@@ -77,31 +95,78 @@ export function DevotionalCreateForm() {
       </div>
 
       <div className="grid gap-4">
-        <Field name="title" label="Title" placeholder="Faith for today" />
+        <Field
+          name="title"
+          label="Title"
+          placeholder="Faith for today"
+          minLength={3}
+          maxLength={120}
+        />
         <div className="grid gap-4 sm:grid-cols-2">
-          <Field name="category" label="Category" placeholder="Prayer" />
-          <Field name="date" label="Date" placeholder="May 31, 2026" />
+          <Field
+            name="category"
+            label="Category"
+            placeholder="Prayer"
+            minLength={2}
+            maxLength={60}
+          />
+          <Field
+            name="date"
+            label="Date"
+            placeholder="May 31, 2026"
+            minLength={4}
+            maxLength={40}
+          />
         </div>
         <div className="grid gap-4 sm:grid-cols-2">
-          <Field name="readTime" label="Read Time" placeholder="5 min read" />
+          <Field
+            name="readTime"
+            label="Read Time"
+            placeholder="5 min read"
+            minLength={3}
+            maxLength={30}
+          />
           <Field
             name="author"
             label="Author"
             placeholder="Grace & Truth Team"
+            minLength={2}
+            maxLength={80}
           />
         </div>
-        <Field name="scripture" label="Scripture" placeholder="Psalm 46:10" />
+        <Field
+          name="scripture"
+          label="Scripture"
+          placeholder="Psalm 46:10"
+          minLength={3}
+          maxLength={80}
+        />
         <label className="grid gap-2 text-sm font-medium text-gray-700">
           Excerpt
           <textarea
             name="excerpt"
             rows={4}
             required
+            minLength={20}
+            maxLength={500}
             placeholder="Write the short devotional summary..."
             className="rounded-xl border border-gray-200 bg-white px-4 py-3 text-gray-900 outline-none transition focus:border-green-700 focus:ring-2 focus:ring-green-700/15"
           />
         </label>
-        <Field name="image" label="Image" type="file" required={false} />
+        <Field
+          name="image"
+          label="Image"
+          type="file"
+          accept="image/*"
+          required={false}
+        />
+        <Field
+          name="pdf"
+          label="Downloadable PDF"
+          type="file"
+          accept="application/pdf"
+          required={false}
+        />
         <Message state={state} />
         <button
           type="submit"
@@ -132,30 +197,85 @@ export function BookCreateForm() {
       </div>
 
       <div className="grid gap-4">
-        <Field name="title" label="Title" placeholder="The Prayer Life" />
-        <Field name="author" label="Author" placeholder="Author name" />
+        <Field
+          name="title"
+          label="Title"
+          placeholder="The Prayer Life"
+          minLength={3}
+          maxLength={120}
+        />
+        <Field
+          name="author"
+          label="Author"
+          placeholder="Author name"
+          minLength={2}
+          maxLength={80}
+        />
         <div className="grid gap-4 sm:grid-cols-2">
-          <Field name="category" label="Category" placeholder="Prayer" />
-          <Field name="price" label="Price" placeholder="$15.00" />
+          <Field
+            name="category"
+            label="Category"
+            placeholder="Prayer"
+            minLength={2}
+            maxLength={60}
+          />
+          <Field
+            name="price"
+            label="Price"
+            placeholder="$15.00"
+            minLength={1}
+            maxLength={30}
+          />
         </div>
         <Field
           name="rating"
           label="Rating"
           type="number"
           placeholder="4.8"
+          min="0"
+          max="5"
+          step="0.1"
           required={false}
         />
+        <Field
+          name="amazonUrl"
+          label="Amazon Link"
+          type="url"
+          placeholder="https://www.amazon.com/..."
+          maxLength={300}
+          required={false}
+        />
+        <label className="grid gap-2 text-sm font-medium text-gray-700">
+          Short Excerpt
+          <textarea
+            name="excerpt"
+            rows={3}
+            required
+            minLength={20}
+            maxLength={400}
+            placeholder="Write a short summary for cards and previews..."
+            className="rounded-xl border border-gray-200 bg-white px-4 py-3 text-gray-900 outline-none transition focus:border-green-700 focus:ring-2 focus:ring-green-700/15"
+          />
+        </label>
         <label className="grid gap-2 text-sm font-medium text-gray-700">
           Description
           <textarea
             name="description"
             rows={4}
             required
+            minLength={30}
+            maxLength={1200}
             placeholder="Write the book description..."
             className="rounded-xl border border-gray-200 bg-white px-4 py-3 text-gray-900 outline-none transition focus:border-green-700 focus:ring-2 focus:ring-green-700/15"
           />
         </label>
-        <Field name="image" label="Image" type="file" required={false} />
+        <Field
+          name="image"
+          label="Image"
+          type="file"
+          accept="image/*"
+          required={false}
+        />
         <Message state={state} />
         <button
           type="submit"
