@@ -1,7 +1,5 @@
 "use server";
 
-import { promises as fs } from "fs";
-import path from "path";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import {
@@ -18,6 +16,7 @@ import {
   updateBook,
   updateDevotional,
 } from "@/app/lib/content";
+import { saveImageUpload, savePdfUpload } from "@/app/lib/media";
 
 export type AdminActionState = {
   ok?: boolean;
@@ -37,59 +36,6 @@ async function ensureAdmin() {
   if (!(await isAdminAuthenticated())) {
     throw new Error("Unauthorized");
   }
-}
-
-async function saveImage(file: FormDataEntryValue | null, fallback: string) {
-  if (!(file instanceof File) || file.size === 0) {
-    return fallback;
-  }
-
-  if (!file.type.startsWith("image/")) {
-    throw new Error("Please upload an image file.");
-  }
-
-  if (file.size > 2 * 1024 * 1024) {
-    throw new Error("Images must be 2MB or smaller.");
-  }
-
-  const extension = path.extname(file.name) || ".jpg";
-  const filename = `${Date.now()}-${Math.random()
-    .toString(36)
-    .slice(2)}${extension}`;
-  const uploadsDir = path.join(process.cwd(), "public", "uploads");
-  const destination = path.join(uploadsDir, filename);
-  const buffer = Buffer.from(await file.arrayBuffer());
-
-  await fs.mkdir(uploadsDir, { recursive: true });
-  await fs.writeFile(destination, buffer);
-
-  return `/uploads/${filename}`;
-}
-
-async function savePdf(file: FormDataEntryValue | null, fallback = "") {
-  if (!(file instanceof File) || file.size === 0) {
-    return fallback;
-  }
-
-  if (file.type !== "application/pdf") {
-    throw new Error("Please upload a PDF file.");
-  }
-
-  if (file.size > 8 * 1024 * 1024) {
-    throw new Error("PDF files must be 8MB or smaller.");
-  }
-
-  const filename = `${Date.now()}-${Math.random()
-    .toString(36)
-    .slice(2)}.pdf`;
-  const uploadsDir = path.join(process.cwd(), "public", "uploads");
-  const destination = path.join(uploadsDir, filename);
-  const buffer = Buffer.from(await file.arrayBuffer());
-
-  await fs.mkdir(uploadsDir, { recursive: true });
-  await fs.writeFile(destination, buffer);
-
-  return `/uploads/${filename}`;
 }
 
 export async function loginAdmin(
@@ -129,17 +75,20 @@ export async function createBook(
     const price = text(formData, "price");
     const rating = Number(text(formData, "rating") || "5");
     const excerpt = text(formData, "excerpt");
-    const description = text(formData, "description");
+    const description = text(formData, "description") || excerpt;
     const amazonUrl = text(formData, "amazonUrl");
 
-    if (!title || !author || !category || !price || !excerpt || !description) {
+    if (!title || !author || !category || !price || !excerpt) {
       return {
         ok: false,
         message: "Please fill in every required book field.",
       };
     }
 
-    const image = await saveImage(formData.get("image"), defaultImage.book);
+    const image = await saveImageUpload(
+      formData.get("image"),
+      defaultImage.book
+    );
 
     await addBook({
       title,
@@ -178,7 +127,6 @@ export async function createDevotional(
 
     const title = text(formData, "title");
     const category = text(formData, "category");
-    const date = text(formData, "date");
     const readTime = text(formData, "readTime");
     const author = text(formData, "author");
     const scripture = text(formData, "scripture");
@@ -187,7 +135,6 @@ export async function createDevotional(
     if (
       !title ||
       !category ||
-      !date ||
       !readTime ||
       !author ||
       !scripture ||
@@ -199,16 +146,16 @@ export async function createDevotional(
       };
     }
 
-    const image = await saveImage(
+    const image = await saveImageUpload(
       formData.get("image"),
       defaultImage.devotional
     );
-    const pdfUrl = await savePdf(formData.get("pdf"));
+    const pdfUrl = await savePdfUpload(formData.get("pdf"));
 
     await addDevotional({
       title,
       category,
-      date,
+      date: "",
       readTime,
       author,
       scripture,
@@ -240,8 +187,9 @@ export async function editBook(formData: FormData) {
 
   const id = Number(text(formData, "id"));
   const rating = Number(text(formData, "rating") || "5");
+  const excerpt = text(formData, "excerpt");
   const currentImage = text(formData, "currentImage") || defaultImage.book;
-  const image = await saveImage(formData.get("image"), currentImage);
+  const image = await saveImageUpload(formData.get("image"), currentImage);
 
   await updateBook(id, {
     title: text(formData, "title"),
@@ -249,8 +197,8 @@ export async function editBook(formData: FormData) {
     category: text(formData, "category"),
     price: text(formData, "price"),
     rating: Number.isFinite(rating) ? rating : 5,
-    excerpt: text(formData, "excerpt"),
-    description: text(formData, "description"),
+    excerpt,
+    description: excerpt,
     amazonUrl: text(formData, "amazonUrl"),
     image,
   });
@@ -267,13 +215,12 @@ export async function editDevotional(formData: FormData) {
   const currentImage =
     text(formData, "currentImage") || defaultImage.devotional;
   const currentPdf = text(formData, "currentPdf");
-  const image = await saveImage(formData.get("image"), currentImage);
-  const pdfUrl = await savePdf(formData.get("pdf"), currentPdf);
+  const image = await saveImageUpload(formData.get("image"), currentImage);
+  const pdfUrl = await savePdfUpload(formData.get("pdf"), currentPdf);
 
   await updateDevotional(id, {
     title: text(formData, "title"),
     category: text(formData, "category"),
-    date: text(formData, "date"),
     readTime: text(formData, "readTime"),
     author: text(formData, "author"),
     scripture: text(formData, "scripture"),

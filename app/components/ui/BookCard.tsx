@@ -2,7 +2,6 @@ type Props = {
   title: string;
   author: string;
   image: string;
-  category: string;
   price: string;
   rating: number;
   description: string;
@@ -12,49 +11,30 @@ export default function BookCard({
   title,
   author,
   image,
-  category,
   price,
   rating,
   description,
 }: Props) {
   return (
-    <div className="bg-white rounded-3xl border border-gray-100 overflow-hidden shadow hover:shadow-xl transition">
-      {/* Image */}
-      <div className="pb-0">
-        <img
-          src={image}
-          alt={title}
-          className="h-64 w-full rounded-2xl object-cover sm:h-72"
-        />
-      </div>
+    <div className="overflow-hidden rounded-2xl border border-gray-100 bg-white shadow transition hover:shadow-xl">
+      <img src={image} alt={title} className="h-64 w-full object-cover sm:h-72" />
 
-      {/* Content */}
-      <div className="p-3">
-        {/* Category */}
-        <span className="text-xs bg-green-100 text-green-700 px-3 py-1 rounded-full">
-          {category}
-        </span>
+      <div className="p-5 sm:p-6">
+        <h3 className="text-lg font-semibold leading-7 sm:text-xl">{title}</h3>
 
-        {/* Title */}
-        <h3 className="mt-4 text-lg font-semibold leading-7 sm:text-xl">
-          {title}
-        </h3>
+        <p className="mt-2 text-gray-500">by {author}</p>
 
-        {/* Author */}
-        <p className="text-gray-500 mt-2">by {author}</p>
+        <p className="mt-4 line-clamp-2 text-sm leading-7 text-gray-600">
+          {description}
+        </p>
 
-        {/* Description */}
-        <p className="text-gray-600 mt-4 leading-7 text-sm">{description}</p>
-
-        {/* Bottom */}
-        <div className="flex items-center justify-between mt-6">
+        <div className="mt-6 flex items-center justify-between gap-4">
           <div>
-            <p className="font-bold text-lg text-green-700">{price}</p>
-
-            <p className="text-sm text-yellow-500">⭐ {rating}</p>
+            <p className="text-lg font-bold text-green-700">{price}</p>
+            <p className="text-sm text-yellow-600">Rating {rating}</p>
           </div>
 
-          <button className="bg-green-700 hover:bg-green-800 text-white px-5 py-3 rounded-xl transition">
+          <button className="rounded-xl bg-green-700 px-5 py-3 text-white transition hover:bg-green-800">
             Buy Now
           </button>
         </div>

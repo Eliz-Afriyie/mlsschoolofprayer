@@ -7,19 +7,39 @@ html {
 body {
   background: #f8f9fc;
   color: #0f172a;
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans), Arial, Helvetica, sans-serif;
+  text-rendering: optimizeLegibility;
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--font-display), Georgia, serif;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
 }
 
 .site-container {
   width: 100%;
   max-width: 92rem;
   margin-inline: auto;
-  padding-inline: 0.75rem;
+  padding-inline: 1rem;
 }
 
 @media (min-width: 640px) {
   .site-container {
-    padding-inline: 1rem;
+    padding-inline: 1.5rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .site-container {
+    padding-inline: 2rem;
   }
 }
 
@@ -43,6 +63,13 @@ body {
 .thin-scrollbar::-webkit-scrollbar-thumb {
   background: rgba(21, 128, 61, 0.35);
   border-radius: 999px;
+}
+
+.line-clamp-2 {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
 }
 
 @keyframes fadeInUp {

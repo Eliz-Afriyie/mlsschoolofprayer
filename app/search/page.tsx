@@ -95,7 +95,6 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
                 <DevotionalCard
                   key={item.id}
                   title={item.title}
-                  category={item.category}
                   image={item.image}
                   date={item.date}
                   readTime={item.readTime}
@@ -117,7 +116,6 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
                   title={book.title}
                   author={book.author}
                   image={book.image}
-                  category={book.category}
                   price={book.price}
                   rating={book.rating}
                   description={book.description}

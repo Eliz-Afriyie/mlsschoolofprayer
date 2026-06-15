@@ -1,7 +1,7 @@
 import { redirect } from "next/navigation";
 import { isAdminAuthenticated } from "@/app/lib/admin-auth";
 import { getUploadedContent } from "@/app/lib/content";
-import AdminDashboard from "./AdminDashboard";
+import AdminDashboard from "./components/AdminDashboard";
 
 export default async function AdminPage() {
   if (!(await isAdminAuthenticated())) {

@@ -1,15 +1,21 @@
 "use client";
 
-import { useActionState } from "react";
-import { BookOpen, FileText, Upload } from "lucide-react";
+import { useActionState, useEffect, useRef } from "react";
+import { useFormStatus } from "react-dom";
+import { BookOpen, FileText, Loader2, Upload } from "lucide-react";
 import {
   createBook,
   createDevotional,
   type AdminActionState,
-} from "./actions";
+} from "../actions";
 
 const initialState: AdminActionState = {
   message: "",
+};
+
+type FormProps = {
+  onResult?: (state: AdminActionState) => void;
+  onSuccess?: () => void;
 };
 
 function Field({
@@ -74,11 +80,52 @@ function Message({ state }: { state: AdminActionState }) {
   );
 }
 
-export function DevotionalCreateForm() {
-  const [state, action, pending] = useActionState(
-    createDevotional,
-    initialState
+function SubmitButton({
+  label,
+  pendingLabel,
+}: {
+  label: string;
+  pendingLabel: string;
+}) {
+  const { pending } = useFormStatus();
+
+  return (
+    <button
+      type="submit"
+      disabled={pending}
+      className="inline-flex h-12 items-center justify-center gap-2 rounded-xl bg-green-700 px-5 font-semibold text-white transition hover:bg-green-800 disabled:cursor-not-allowed disabled:opacity-60"
+    >
+      {pending ? (
+        <Loader2 className="animate-spin" size={18} />
+      ) : (
+        <Upload size={18} />
+      )}
+      {pending ? pendingLabel : label}
+    </button>
   );
+}
+
+export function DevotionalCreateForm({ onResult, onSuccess }: FormProps) {
+  const [state, action] = useActionState(createDevotional, initialState);
+  const onResultRef = useRef(onResult);
+  const onSuccessRef = useRef(onSuccess);
+
+  useEffect(() => {
+    onResultRef.current = onResult;
+    onSuccessRef.current = onSuccess;
+  }, [onResult, onSuccess]);
+
+  useEffect(() => {
+    if (!state.message) {
+      return;
+    }
+
+    onResultRef.current?.(state);
+
+    if (state.ok) {
+      onSuccessRef.current?.();
+    }
+  }, [state]);
 
   return (
     <form action={action}>
@@ -102,22 +149,13 @@ export function DevotionalCreateForm() {
           minLength={3}
           maxLength={120}
         />
-        <div className="grid gap-4 sm:grid-cols-2">
-          <Field
-            name="category"
-            label="Category"
-            placeholder="Prayer"
-            minLength={2}
-            maxLength={60}
-          />
-          <Field
-            name="date"
-            label="Date"
-            placeholder="May 31, 2026"
-            minLength={4}
-            maxLength={40}
-          />
-        </div>
+        <Field
+          name="category"
+          label="Category"
+          placeholder="Prayer"
+          minLength={2}
+          maxLength={60}
+        />
         <div className="grid gap-4 sm:grid-cols-2">
           <Field
             name="readTime"
@@ -155,7 +193,7 @@ export function DevotionalCreateForm() {
         </label>
         <Field
           name="image"
-          label="Image"
+          label="Cover Image"
           type="file"
           accept="image/*"
           required={false}
@@ -168,21 +206,33 @@ export function DevotionalCreateForm() {
           required={false}
         />
         <Message state={state} />
-        <button
-          type="submit"
-          disabled={pending}
-          className="inline-flex h-12 items-center justify-center gap-2 rounded-xl bg-green-700 px-5 font-semibold text-white transition hover:bg-green-800 disabled:cursor-not-allowed disabled:opacity-60"
-        >
-          <Upload size={18} />
-          {pending ? "Uploading..." : "Upload Devotional"}
-        </button>
+        <SubmitButton label="Upload Devotional" pendingLabel="Uploading..." />
       </div>
     </form>
   );
 }
 
-export function BookCreateForm() {
-  const [state, action, pending] = useActionState(createBook, initialState);
+export function BookCreateForm({ onResult, onSuccess }: FormProps) {
+  const [state, action] = useActionState(createBook, initialState);
+  const onResultRef = useRef(onResult);
+  const onSuccessRef = useRef(onSuccess);
+
+  useEffect(() => {
+    onResultRef.current = onResult;
+    onSuccessRef.current = onSuccess;
+  }, [onResult, onSuccess]);
+
+  useEffect(() => {
+    if (!state.message) {
+      return;
+    }
+
+    onResultRef.current?.(state);
+
+    if (state.ok) {
+      onSuccessRef.current?.();
+    }
+  }, [state]);
 
   return (
     <form action={action}>
@@ -257,34 +307,15 @@ export function BookCreateForm() {
             className="rounded-xl border border-gray-200 bg-white px-4 py-3 text-gray-900 outline-none transition focus:border-green-700 focus:ring-2 focus:ring-green-700/15"
           />
         </label>
-        <label className="grid gap-2 text-sm font-medium text-gray-700">
-          Description
-          <textarea
-            name="description"
-            rows={4}
-            required
-            minLength={30}
-            maxLength={1200}
-            placeholder="Write the book description..."
-            className="rounded-xl border border-gray-200 bg-white px-4 py-3 text-gray-900 outline-none transition focus:border-green-700 focus:ring-2 focus:ring-green-700/15"
-          />
-        </label>
         <Field
           name="image"
-          label="Image"
+          label="Cover Image"
           type="file"
           accept="image/*"
           required={false}
         />
         <Message state={state} />
-        <button
-          type="submit"
-          disabled={pending}
-          className="inline-flex h-12 items-center justify-center gap-2 rounded-xl bg-green-700 px-5 font-semibold text-white transition hover:bg-green-800 disabled:cursor-not-allowed disabled:opacity-60"
-        >
-          <Upload size={18} />
-          {pending ? "Uploading..." : "Upload Book"}
-        </button>
+        <SubmitButton label="Upload Book" pendingLabel="Uploading..." />
       </div>
     </form>
   );

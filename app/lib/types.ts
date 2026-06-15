@@ -9,6 +9,7 @@ export type Book = {
   description: string;
   excerpt?: string;
   amazonUrl?: string;
+  createdAt?: string;
 };
 
 export type Devotional = {
@@ -22,6 +23,7 @@ export type Devotional = {
   scripture: string;
   excerpt: string;
   pdfUrl?: string;
+  createdAt?: string;
 };
 
 export type UploadedContent = {

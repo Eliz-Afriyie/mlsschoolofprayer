@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { ChevronDown, Search } from "lucide-react";
+import { Search } from "lucide-react";
 import DevotionalCard from "../components/ui/DevotionalCard";
 import type { Devotional } from "@/app/lib/types";
 
@@ -69,45 +69,50 @@ export default function DevotionalBrowser({
   return (
     <>
       <div className="site-container">
-        <div className="relative z-30 -mt-8 rounded-2xl border border-gray-200 bg-white p-3 shadow-sm">
-          <div className="grid gap-3 md:grid-cols-[1fr_240px_auto] md:items-center">
-            <div className="flex h-12 items-center gap-3 rounded-xl bg-[#F7F8F5] px-4">
-              <Search className="text-green-700" size={20} />
+        <div className="relative z-30 mx-auto -mt-5 max-w-3xl rounded-xl border border-gray-200 bg-white p-2 shadow-sm">
+          <div className="grid gap-2 md:grid-cols-[1fr_auto] md:items-center">
+            <div className="flex h-10 items-center gap-2 rounded-lg bg-[#F7F8F5] px-3">
+              <Search className="text-green-700" size={18} />
               <input
                 type="search"
                 value={query}
                 onChange={(event) => updateQuery(event.target.value)}
                 placeholder="Search devotionals..."
-                className="w-full bg-transparent text-gray-700 outline-none placeholder:text-gray-400"
+                className="w-full bg-transparent text-sm text-gray-700 outline-none placeholder:text-gray-400"
               />
             </div>
 
-            <label className="relative flex h-12 items-center rounded-xl bg-[#F7F8F5] px-4 text-gray-700">
-              <select
-                value={category}
-                onChange={(event) => updateCategory(event.target.value)}
-                className="w-full appearance-none bg-transparent pr-8 outline-none"
-              >
-                {categories.map((item) => (
-                  <option key={item.name} value={item.name}>
-                    {item.name} ({item.count})
-                  </option>
-                ))}
-              </select>
-              <ChevronDown
-                className="pointer-events-none absolute right-4"
-                size={20}
-              />
-            </label>
-
-            <p className="px-2 text-sm font-medium text-gray-500 md:text-right">
+            <p className="px-2 text-xs font-semibold text-gray-500 md:text-right">
               {filteredDevotionals.length} of {devotionals.length}
             </p>
           </div>
         </div>
       </div>
 
-      <section className="site-container py-10 sm:py-12">
+      <section className="site-container py-8 sm:py-10">
+        <div className="mb-6 overflow-x-auto pb-2">
+          <div className="flex min-w-max gap-2">
+            {categories.map((item) => {
+              const active = category === item.name;
+
+              return (
+                <button
+                  key={item.name}
+                  type="button"
+                  onClick={() => updateCategory(item.name)}
+                  className={`rounded-full border px-4 py-2 text-sm font-semibold transition ${
+                    active
+                      ? "border-green-700 bg-green-700 text-white"
+                      : "border-gray-200 bg-white text-gray-700 hover:border-green-700 hover:text-green-800"
+                  }`}
+                >
+                  {item.name} ({item.count})
+                </button>
+              );
+            })}
+          </div>
+        </div>
+
         {filteredDevotionals.length ? (
           <>
             <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
@@ -115,7 +120,6 @@ export default function DevotionalBrowser({
                 <DevotionalCard
                   key={item.id}
                   title={item.title}
-                  category={item.category}
                   image={item.image}
                   date={item.date}
                   readTime={item.readTime}
