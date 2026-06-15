@@ -18,43 +18,43 @@ export default function LoginForm() {
   return (
     <form
       action={formAction}
-      className="w-full max-w-md rounded-2xl border border-gray-200 bg-white p-8 shadow-sm"
+      className="relative z-10 w-full max-w-md rounded-2xl border border-white/35 bg-green-950/35 p-7 text-white shadow-2xl shadow-green-950/50 backdrop-blur-2xl sm:p-8"
     >
-      <div className="mb-8">
-        <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-green-100 text-green-800">
+      <div className="mb-7">
+        <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-xl border border-white/30 bg-white/20 text-amber-200 shadow-sm">
           <LockKeyhole size={24} />
         </div>
-        <h1 className="text-3xl font-bold text-gray-950">Admin Login</h1>
-        <p className="mt-2 text-gray-600">
+        <h1 className="text-3xl font-bold text-white">Admin Login</h1>
+        <p className="mt-2 text-white/75">
           Sign in to upload books and devotionals.
         </p>
       </div>
 
-      <div className="grid gap-4">
-        <label className="grid gap-2 text-sm font-medium text-gray-700">
+      <div className="grid gap-3.5">
+        <label className="grid gap-2 text-sm font-medium text-white/85">
           Username
           <input
             name="username"
             required
             autoComplete="username"
-            className="h-12 rounded-xl border border-gray-200 px-4 text-gray-900 outline-none transition focus:border-green-700 focus:ring-2 focus:ring-green-700/15"
+            className="h-12 rounded-xl border border-white/35 bg-white/25 px-4 text-white outline-none shadow-inner shadow-green-950/10 transition placeholder:text-white/55 focus:border-amber-200 focus:bg-white/30 focus:ring-2 focus:ring-amber-200/30"
           />
         </label>
 
-        <label className="grid gap-2 text-sm font-medium text-gray-700">
+        <label className="grid gap-2 text-sm font-medium text-white/85">
           Password
-          <div className="flex h-12 items-center rounded-xl border border-gray-200 px-4 transition focus-within:border-green-700 focus-within:ring-2 focus-within:ring-green-700/15">
+          <div className="flex h-12 items-center rounded-xl border border-white/35 bg-white/25 px-4 shadow-inner shadow-green-950/10 transition focus-within:border-amber-200 focus-within:bg-white/30 focus-within:ring-2 focus-within:ring-amber-200/30">
             <input
               name="password"
               type={showPassword ? "text" : "password"}
               required
               autoComplete="current-password"
-              className="min-w-0 flex-1 text-gray-900 outline-none"
+              className="min-w-0 flex-1 bg-transparent text-white outline-none"
             />
             <button
               type="button"
               onClick={() => setShowPassword((visible) => !visible)}
-              className="ml-3 text-gray-500 transition hover:text-green-700"
+              className="ml-3 text-white/65 transition hover:text-amber-200"
               aria-label={showPassword ? "Hide password" : "Show password"}
             >
               {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
@@ -63,7 +63,7 @@ export default function LoginForm() {
         </label>
 
         {state.message ? (
-          <p className="rounded-xl bg-red-50 px-4 py-3 text-sm text-red-700">
+          <p className="rounded-xl border border-red-200/40 bg-red-500/20 px-4 py-3 text-sm text-red-50">
             {state.message}
           </p>
         ) : null}
@@ -71,7 +71,7 @@ export default function LoginForm() {
         <button
           type="submit"
           disabled={pending}
-          className="inline-flex h-12 items-center justify-center gap-2 rounded-xl bg-green-700 px-5 font-semibold text-white transition hover:bg-green-800 disabled:cursor-not-allowed disabled:opacity-60"
+          className="inline-flex h-12 items-center justify-center gap-2 rounded-xl bg-amber-300 px-5 font-semibold text-green-950 transition hover:bg-amber-200 disabled:cursor-not-allowed disabled:opacity-60"
         >
           <LogIn size={18} />
           {pending ? "Signing in..." : "Sign In"}

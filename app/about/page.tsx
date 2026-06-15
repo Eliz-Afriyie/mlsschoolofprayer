@@ -21,8 +21,8 @@ const highlights = [
 export default function AboutPage() {
   return (
     <main className="min-h-screen bg-[#F7F8F5]">
-      <section className="bg-green-900 px-4 py-16 text-white sm:px-6 sm:py-24">
-        <div className="mx-auto max-w-7xl">
+      <section className="bg-green-900 py-16 text-white sm:py-24">
+        <div className="site-container">
           <p className="mb-4 text-sm font-semibold uppercase tracking-[3px] text-amber-300">
             About the Founder
           </p>
@@ -36,8 +36,8 @@ export default function AboutPage() {
         </div>
       </section>
 
-      <section className="mx-auto grid max-w-7xl gap-10 px-4 py-14 sm:px-6 sm:py-20 lg:grid-cols-[0.7fr_1.3fr] lg:items-start">
-        <div className="mx-auto w-full max-w-sm overflow-hidden rounded-2xl bg-green-950 text-white shadow-sm">
+      <section className="site-container grid gap-10 py-14 sm:py-20 lg:grid-cols-[0.7fr_1.3fr] lg:items-start">
+        <div className="mx-auto w-full max-w-sm overflow-hidden rounded-2xl bg-green-950 text-white shadow-sm lg:mx-0">
           <div className="flex aspect-[4/5] min-h-[340px] items-center justify-center p-6">
             <div className="text-center">
               <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-white/10">

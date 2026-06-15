@@ -8,7 +8,7 @@ export default async function DevotionalPage() {
     <>
       <main className="bg-[#F7F8F5] min-h-screen">
         <section
-          className="relative h-72 overflow-hidden px-6 pb-24 pt-24 sm:h-80 sm:pb-32 sm:pt-28"
+          className="relative h-72 overflow-hidden pb-24 pt-24 sm:h-80 sm:pb-32 sm:pt-28"
           style={{
             backgroundImage: "url('/devotional/devo-hero.jpg')",
             backgroundSize: "cover",
@@ -19,7 +19,7 @@ export default async function DevotionalPage() {
           <div className="absolute inset-0 bg-gradient-to-r from-[#0B2D16] via-[#0B2D16]/80 to-[#0B2D16]/20" />
 
           {/* Hero Content */}
-          <div className="relative z-10 mx-auto max-w-7xl">
+          <div className="site-container relative z-10">
             <div className="max-w-2xl">
               <h1 className="mb-5 text-4xl font-bold text-white sm:text-5xl md:text-6xl">
                 Devotionals

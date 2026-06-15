@@ -3,7 +3,7 @@ import Link from "next/link";
 export default function Footer() {
   return (
     <footer className="bg-[#0F2E14] text-white">
-      <div className="mx-auto grid max-w-7xl gap-10 px-4 py-12 sm:px-6 sm:py-16 md:grid-cols-2 lg:grid-cols-4">
+      <div className="site-container grid gap-10 py-12 sm:py-16 md:grid-cols-2 lg:grid-cols-4">
         {/* Brand */}
         <div className="align-items-center">
           <img

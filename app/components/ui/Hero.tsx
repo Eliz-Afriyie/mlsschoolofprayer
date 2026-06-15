@@ -21,7 +21,7 @@ const slides = [
   },
 
   {
-    image: "/herobg3.jpg",
+    image: "/hero3.jpg",
     verse: "“I can do all things through Christ.”",
     scripture: "Philippians 4:13",
     description:
@@ -68,8 +68,8 @@ export default function Hero() {
             <div className="absolute inset-0 bg-black/50" />
 
             {/* Content */}
-            <div className="relative z-20 flex h-full items-center">
-              <div className="max-w-2xl px-5 pt-12 text-white sm:px-10 md:px-16">
+            <div className="site-container relative z-20 flex h-full items-center">
+              <div className="max-w-2xl pt-12 text-white">
                 {/* Verse */}
                 <h1 className="mb-5 text-3xl font-bold leading-tight animate-fadeInUp sm:text-4xl md:mb-6 md:text-6xl">
                   {slide.verse}

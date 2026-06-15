@@ -3,9 +3,9 @@ import { ArrowRight, Church, ImageIcon } from "lucide-react";
 
 export default function AboutPreview() {
   return (
-    <section className="mx-auto max-w-7xl px-4 sm:px-6">
+    <section className="site-container">
       <div className="grid gap-10 lg:grid-cols-[0.7fr_1.3fr] lg:items-center">
-        <div className="relative mx-auto w-full max-w-sm overflow-hidden rounded-2xl bg-green-950 text-white shadow-sm">
+        <div className="relative mx-auto w-full max-w-sm overflow-hidden rounded-2xl bg-green-950 text-white shadow-sm lg:mx-0">
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(250,204,21,0.18),transparent_35%)]" />
           <div className="relative flex aspect-[4/5] min-h-[300px] items-center justify-center p-6">
             <div className="text-center">
@@ -24,13 +24,13 @@ export default function AboutPreview() {
 
         <div>
           <p className="mb-4 text-sm font-semibold uppercase tracking-[3px] text-green-700">
-            About Prophet Livingston
+            About Prophet Lingston
           </p>
           <h2 className="text-2xl font-bold leading-tight text-gray-950 sm:text-3xl md:text-4xl">
             A voice of prayer, biblical direction, and spiritual growth.
           </h2>
           <p className="mt-5 text-base leading-7 text-gray-600 sm:text-lg sm:leading-8">
-            Prophet Livingston is an associate pastor at Fountain Gate Chapel
+            Prophet Lingston is an associate pastor at Fountain Gate Chapel
             International, Desert Pastures. Through the School of Prayer, he
             equips believers with strategic prayer education, biblical
             devotionals, and practical direction for a stronger walk with God.

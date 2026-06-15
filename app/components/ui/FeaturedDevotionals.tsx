@@ -6,7 +6,7 @@ export default async function FeaturedDevotionals() {
   const devotionals = await getDevotionals();
 
   return (
-    <section className="mx-auto max-w-7xl px-4 sm:px-6">
+    <section className="site-container">
       <div className="mb-8 flex items-start justify-between gap-4">
         <h2 className="text-2xl font-bold sm:text-3xl">Latest Devotionals</h2>
 

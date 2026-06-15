@@ -50,8 +50,8 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
 
   return (
     <main className="min-h-screen bg-[#F7F8F5]">
-      <section className="bg-green-900 px-6 py-20 text-white">
-        <div className="mx-auto max-w-7xl">
+      <section className="bg-green-900 py-20 text-white">
+        <div className="site-container">
           <div className="mb-5 flex h-12 w-12 items-center justify-center rounded-xl bg-white/10">
             <Search size={24} />
           </div>
@@ -64,7 +64,7 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
         </div>
       </section>
 
-      <section className="mx-auto max-w-7xl px-6 py-16">
+      <section className="site-container py-16">
         {!query ? (
           <div className="rounded-2xl border border-gray-200 bg-white p-8 text-gray-600">
             Enter a search term from the header to begin.
