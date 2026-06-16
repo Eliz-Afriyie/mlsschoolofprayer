@@ -119,6 +119,7 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
                   price={book.price}
                   rating={book.rating}
                   description={book.description}
+                  amazonUrl={book.amazonUrl}
                 />
               ))}
             </div>

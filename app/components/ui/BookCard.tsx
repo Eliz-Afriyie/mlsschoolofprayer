@@ -5,6 +5,7 @@ type Props = {
   price: string;
   rating: number;
   description: string;
+  amazonUrl?: string;
 };
 
 export default function BookCard({
@@ -14,7 +15,10 @@ export default function BookCard({
   price,
   rating,
   description,
+  amazonUrl,
 }: Props) {
+  const formattedRating = Number.isFinite(rating) ? rating.toFixed(1) : "0.0";
+
   return (
     <div className="overflow-hidden rounded-2xl border border-gray-100 bg-white shadow transition hover:shadow-xl">
       <img src={image} alt={title} className="h-64 w-full object-cover sm:h-72" />
@@ -31,12 +35,26 @@ export default function BookCard({
         <div className="mt-6 flex items-center justify-between gap-4">
           <div>
             <p className="text-lg font-bold text-green-700">{price}</p>
-            <p className="text-sm text-yellow-600">Rating {rating}</p>
+            <p className="inline-flex items-center gap-1 text-sm font-semibold text-yellow-600">
+              <span className="text-xl leading-none">★</span>
+              <span>{formattedRating}</span>
+            </p>
           </div>
 
-          <button className="rounded-xl bg-green-700 px-5 py-3 text-white transition hover:bg-green-800">
-            Buy Now
-          </button>
+          {amazonUrl ? (
+            <a
+              href={amazonUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="rounded-xl bg-green-700 px-5 py-3 text-white transition hover:bg-green-800"
+            >
+              Buy Now
+            </a>
+          ) : (
+            <span className="rounded-xl bg-gray-200 px-5 py-3 text-gray-500">
+              Buy Now
+            </span>
+          )}
         </div>
       </div>
     </div>

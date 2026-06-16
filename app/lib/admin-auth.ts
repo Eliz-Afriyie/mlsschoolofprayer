@@ -7,7 +7,10 @@ const cookieName = "sop_admin_session";
 const maxAge = 60 * 60 * 8;
 
 function getSecret() {
-  return process.env.ADMIN_SESSION_SECRET ?? "local-development-session-secret";
+  return (
+    process.env.ADMIN_SESSION_SECRET?.trim() ??
+    "local-development-session-secret"
+  );
 }
 
 function sign(value: string) {
@@ -26,8 +29,8 @@ function safeCompare(left: string, right: string) {
 
 export function getAdminCredentials() {
   return {
-    username: process.env.ADMIN_USERNAME ?? "admin",
-    password: process.env.ADMIN_PASSWORD ?? "change-me",
+    username: process.env.ADMIN_USERNAME?.trim() ?? "admin",
+    password: process.env.ADMIN_PASSWORD?.trim() ?? "change-me",
   };
 }
 

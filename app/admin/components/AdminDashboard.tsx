@@ -199,7 +199,7 @@ export default function AdminDashboard({ books, devotionals }: Props) {
                         setSection("devotionals");
                         setModal("devotional");
                       }}
-                      className="inline-flex items-center justify-center gap-2 rounded-xl bg-green-700 px-4 py-3 font-semibold text-white"
+                      className="inline-flex items-center justify-center gap-2 rounded-xl bg-green-700 px-4 py-3 font-semibold text-white shadow-sm transition hover:-translate-y-0.5 hover:bg-green-800 hover:shadow-md focus:outline-none focus:ring-2 focus:ring-green-700/25"
                     >
                       <Plus size={18} />
                       New Devotional
@@ -210,7 +210,7 @@ export default function AdminDashboard({ books, devotionals }: Props) {
                         setSection("books");
                         setModal("book");
                       }}
-                      className="inline-flex items-center justify-center gap-2 rounded-xl border border-green-700 px-4 py-3 font-semibold text-green-800"
+                      className="inline-flex items-center justify-center gap-2 rounded-xl border border-green-700 px-4 py-3 font-semibold text-green-800 transition hover:-translate-y-0.5 hover:bg-green-700 hover:text-white hover:shadow-md focus:outline-none focus:ring-2 focus:ring-green-700/25"
                     >
                       <Plus size={18} />
                       New Book

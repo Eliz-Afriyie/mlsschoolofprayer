@@ -32,6 +32,20 @@ function text(formData: FormData, key: string) {
   return String(formData.get(key) ?? "").trim();
 }
 
+function formatBookPrice(formData: FormData) {
+  const rawAmount = text(formData, "priceAmount") || text(formData, "price");
+  const currency = text(formData, "priceCurrency") === "USD" ? "USD" : "GHS";
+  const normalizedAmount = rawAmount.replace(/[^\d.]/g, "");
+  const amount = Number(normalizedAmount);
+
+  if (!rawAmount || !Number.isFinite(amount)) {
+    return "";
+  }
+
+  const formattedAmount = amount.toFixed(2);
+  return currency === "USD" ? `$${formattedAmount}` : `GHS ${formattedAmount}`;
+}
+
 async function ensureAdmin() {
   if (!(await isAdminAuthenticated())) {
     throw new Error("Unauthorized");
@@ -72,7 +86,7 @@ export async function createBook(
     const title = text(formData, "title");
     const author = text(formData, "author");
     const category = text(formData, "category");
-    const price = text(formData, "price");
+    const price = formatBookPrice(formData);
     const rating = Number(text(formData, "rating") || "5");
     const excerpt = text(formData, "excerpt");
     const description = text(formData, "description") || excerpt;
@@ -188,6 +202,7 @@ export async function editBook(formData: FormData) {
   const id = Number(text(formData, "id"));
   const rating = Number(text(formData, "rating") || "5");
   const excerpt = text(formData, "excerpt");
+  const price = formatBookPrice(formData);
   const currentImage = text(formData, "currentImage") || defaultImage.book;
   const image = await saveImageUpload(formData.get("image"), currentImage);
 
@@ -195,7 +210,7 @@ export async function editBook(formData: FormData) {
     title: text(formData, "title"),
     author: text(formData, "author"),
     category: text(formData, "category"),
-    price: text(formData, "price"),
+    price,
     rating: Number.isFinite(rating) ? rating : 5,
     excerpt,
     description: excerpt,

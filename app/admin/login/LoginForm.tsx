@@ -37,6 +37,7 @@ export default function LoginForm() {
             name="username"
             required
             autoComplete="username"
+            placeholder="Enter admin username"
             className="h-12 rounded-xl border border-white/35 bg-white/25 px-4 text-white outline-none shadow-inner shadow-green-950/10 transition placeholder:text-white/55 focus:border-amber-200 focus:bg-white/30 focus:ring-2 focus:ring-amber-200/30"
           />
         </label>
@@ -49,7 +50,8 @@ export default function LoginForm() {
               type={showPassword ? "text" : "password"}
               required
               autoComplete="current-password"
-              className="min-w-0 flex-1 bg-transparent text-white outline-none"
+              placeholder="Enter admin password"
+              className="min-w-0 flex-1 bg-transparent text-white outline-none placeholder:text-white/55"
             />
             <button
               type="button"

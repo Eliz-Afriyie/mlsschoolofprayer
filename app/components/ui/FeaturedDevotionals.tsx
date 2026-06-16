@@ -10,9 +10,12 @@ export default async function FeaturedDevotionals() {
       <div className="mb-8 flex items-start justify-between gap-4">
         <h2 className="text-2xl font-bold sm:text-3xl">Latest Devotionals</h2>
 
-        <button className="shrink-0 text-sm font-semibold text-green-700 sm:text-base">
-          <Link href="/devotional">View All -&gt;</Link>
-        </button>
+        <Link
+          href="/devotional"
+          className="shrink-0 rounded-full px-3 py-2 text-sm font-semibold text-green-700 transition hover:bg-green-50 hover:text-green-900 focus:outline-none focus:ring-2 focus:ring-green-700/25 sm:text-base"
+        >
+          View All -&gt;
+        </Link>
       </div>
 
       {devotionals.length ? (

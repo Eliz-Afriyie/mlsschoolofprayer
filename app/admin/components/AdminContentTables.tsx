@@ -173,6 +173,44 @@ function FileField({
   );
 }
 
+function parsePrice(value: string) {
+  const normalized = value.trim();
+  const currency = normalized.startsWith("$") ? "USD" : "GHS";
+  const amount = normalized.replace(/[^\d.]/g, "");
+
+  return {
+    amount,
+    currency,
+  };
+}
+
+function PriceEditor({ price }: { price: string }) {
+  const parsed = parsePrice(price);
+
+  return (
+    <label className="grid gap-2 text-sm font-semibold text-gray-700">
+      Price
+      <div className="grid gap-2 md:grid-cols-[1fr_auto]">
+        <Input
+          name="priceAmount"
+          defaultValue={parsed.amount}
+          type="number"
+          min="0"
+          step="0.01"
+        />
+        <select
+          name="priceCurrency"
+          defaultValue={parsed.currency}
+          className="h-10 rounded-lg border border-gray-200 px-3 text-sm outline-none focus:border-green-700"
+        >
+          <option value="GHS">GHS</option>
+          <option value="USD">USD</option>
+        </select>
+      </div>
+    </label>
+  );
+}
+
 export function DevotionalTable({
   devotionals,
   onAdd,
@@ -219,7 +257,7 @@ export function DevotionalTable({
         <button
           type="button"
           onClick={onAdd}
-          className="inline-flex items-center justify-center gap-2 rounded-xl bg-green-700 px-4 py-2.5 text-sm font-semibold text-white"
+          className="inline-flex items-center justify-center gap-2 rounded-xl bg-green-700 px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:-translate-y-0.5 hover:bg-green-800 hover:shadow-md focus:outline-none focus:ring-2 focus:ring-green-700/25"
         >
           <Plus size={17} />
           Add New
@@ -422,7 +460,7 @@ export function BookTable({ books, onAdd }: { books: Book[]; onAdd: () => void }
         <button
           type="button"
           onClick={onAdd}
-          className="inline-flex items-center justify-center gap-2 rounded-xl bg-green-700 px-4 py-2.5 text-sm font-semibold text-white"
+          className="inline-flex items-center justify-center gap-2 rounded-xl bg-green-700 px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:-translate-y-0.5 hover:bg-green-800 hover:shadow-md focus:outline-none focus:ring-2 focus:ring-green-700/25"
         >
           <Plus size={17} />
           Add New
@@ -555,9 +593,8 @@ export function BookTable({ books, onAdd }: { books: Book[]; onAdd: () => void }
             <CoverImagePreview title={editing.title} image={editing.image} />
             <Input name="title" defaultValue={editing.title} />
             <Input name="author" defaultValue={editing.author} />
-            <div className="grid gap-3 md:grid-cols-3">
+            <div className="grid gap-3 md:grid-cols-2">
               <Input name="category" defaultValue={editing.category} />
-              <Input name="price" defaultValue={editing.price} />
               <Input
                 name="rating"
                 defaultValue={editing.rating}
@@ -567,6 +604,7 @@ export function BookTable({ books, onAdd }: { books: Book[]; onAdd: () => void }
                 step="0.1"
               />
             </div>
+            <PriceEditor price={editing.price} />
             <Input
               name="amazonUrl"
               defaultValue={editing.amazonUrl ?? ""}

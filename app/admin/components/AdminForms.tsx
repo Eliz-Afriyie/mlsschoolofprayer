@@ -63,6 +63,33 @@ function Field({
   );
 }
 
+function PriceField() {
+  return (
+    <label className="grid gap-2 text-sm font-medium text-gray-700">
+      Price
+      <div className="grid gap-2 sm:grid-cols-[1fr_auto]">
+        <input
+          name="priceAmount"
+          type="number"
+          min="0"
+          step="0.01"
+          placeholder="20.00"
+          required
+          className="h-12 rounded-xl border border-gray-200 bg-white px-4 text-gray-900 outline-none transition focus:border-green-700 focus:ring-2 focus:ring-green-700/15"
+        />
+        <select
+          name="priceCurrency"
+          defaultValue="GHS"
+          className="h-12 rounded-xl border border-gray-200 bg-white px-4 text-gray-900 outline-none transition focus:border-green-700 focus:ring-2 focus:ring-green-700/15"
+        >
+          <option value="GHS">GHS</option>
+          <option value="USD">USD</option>
+        </select>
+      </div>
+    </label>
+  );
+}
+
 function Message({ state }: { state: AdminActionState }) {
   if (!state.message) {
     return null;
@@ -269,13 +296,7 @@ export function BookCreateForm({ onResult, onSuccess }: FormProps) {
             minLength={2}
             maxLength={60}
           />
-          <Field
-            name="price"
-            label="Price"
-            placeholder="$15.00"
-            minLength={1}
-            maxLength={30}
-          />
+          <PriceField />
         </div>
         <Field
           name="rating"

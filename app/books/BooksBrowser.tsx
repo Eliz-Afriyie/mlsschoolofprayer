@@ -13,16 +13,11 @@ export default function BooksBrowser({ books }: { books: Book[] }) {
   const [visibleCount, setVisibleCount] = useState(pageSize);
 
   const categories = useMemo(() => {
-    const counts = books.reduce<Record<string, number>>((acc, item) => {
-      acc[item.category] = (acc[item.category] ?? 0) + 1;
-      return acc;
-    }, {});
-
     return [
-      { name: "All Categories", count: books.length },
-      ...Object.entries(counts)
-        .sort(([left], [right]) => left.localeCompare(right))
-        .map(([name, count]) => ({ name, count })),
+      "All Categories",
+      ...Array.from(new Set(books.map((item) => item.category))).sort((left, right) =>
+        left.localeCompare(right)
+      ),
     ];
   }, [books]);
 
@@ -82,20 +77,20 @@ export default function BooksBrowser({ books }: { books: Book[] }) {
         <div className="mb-6 overflow-x-auto pb-2">
           <div className="flex min-w-max gap-2">
             {categories.map((item) => {
-              const active = category === item.name;
+              const active = category === item;
 
               return (
                 <button
-                  key={item.name}
+                  key={item}
                   type="button"
-                  onClick={() => updateCategory(item.name)}
+                  onClick={() => updateCategory(item)}
                   className={`rounded-full border px-4 py-2 text-sm font-semibold transition ${
                     active
                       ? "border-green-700 bg-green-700 text-white"
                       : "border-gray-200 bg-white text-gray-700 hover:border-green-700 hover:text-green-800"
                   }`}
                 >
-                  {item.name} ({item.count})
+                  {item}
                 </button>
               );
             })}
@@ -114,6 +109,7 @@ export default function BooksBrowser({ books }: { books: Book[] }) {
                   price={book.price}
                   rating={book.rating}
                   description={book.description}
+                  amazonUrl={book.amazonUrl}
                 />
               ))}
             </div>
