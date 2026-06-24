@@ -58,7 +58,9 @@ function SidebarContent({
             Admin Portal
           </p>
           <h1 className="mt-2 text-2xl font-bold">Content Studio</h1>
-          <p className="mt-2 text-sm text-white/65">Manage uploads</p>
+          <p className="mt-2 text-sm text-white/65">
+            Manage your website
+          </p>
         </div>
 
         <nav className="grid gap-2">

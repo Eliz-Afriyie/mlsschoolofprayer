@@ -1,8 +1,8 @@
 "use client";
 
-import { useActionState } from "react";
+import { useActionState, useState } from "react";
 import { useFormStatus } from "react-dom";
-import { Loader2, Save } from "lucide-react";
+import { Eye, EyeOff, Loader2, RotateCcw, Save, Trash2 } from "lucide-react";
 import type {
   AboutContent,
   ContactContent,
@@ -16,6 +16,7 @@ import {
   updateSiteSettings,
   type AdminActionState,
 } from "../actions";
+import { ConfirmationModal } from "./AdminDashboardWidgets";
 
 const initialState: AdminActionState = { message: "" };
 
@@ -81,10 +82,13 @@ function ImageField({
   name: string;
   current: string;
 }) {
+  const [confirmRemove, setConfirmRemove] = useState(false);
+  const [removed, setRemoved] = useState(false);
+
   return (
     <div className="grid gap-3">
       <p className="text-sm font-semibold text-gray-700">{label}</p>
-      {current ? (
+      {current && !removed ? (
         <img
           src={current}
           alt=""
@@ -97,7 +101,83 @@ function ImageField({
         accept="image/*"
         className="rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm"
       />
+      <input
+        type="hidden"
+        name={`${name}Remove`}
+        value={removed ? "on" : ""}
+      />
+      {current ? (
+        removed ? (
+          <button
+            type="button"
+            onClick={() => setRemoved(false)}
+            className="inline-flex w-fit items-center gap-2 rounded-lg border border-gray-200 px-3 py-2 text-sm font-semibold text-gray-700 transition hover:bg-gray-100"
+          >
+            <RotateCcw size={16} />
+            Undo image removal
+          </button>
+        ) : (
+          <button
+            type="button"
+            onClick={() => setConfirmRemove(true)}
+            className="inline-flex w-fit items-center gap-2 rounded-lg bg-red-50 px-3 py-2 text-sm font-semibold text-red-700 transition hover:bg-red-100"
+          >
+            <Trash2 size={16} />
+            Remove current image
+          </button>
+        )
+      ) : null}
+
+      {confirmRemove ? (
+        <ConfirmationModal
+          title={`Remove ${label.toLowerCase()}?`}
+          description="The image will disappear from this content after you save. The original file will remain safely in Supabase Storage."
+          onClose={() => setConfirmRemove(false)}
+          tone="warning"
+        >
+          <button
+            type="button"
+            onClick={() => {
+              setRemoved(true);
+              setConfirmRemove(false);
+            }}
+            className="rounded-xl bg-amber-500 px-5 py-3 text-sm font-semibold text-white transition hover:bg-amber-600"
+          >
+            Remove image
+          </button>
+        </ConfirmationModal>
+      ) : null}
     </div>
+  );
+}
+
+function ToggleField({
+  label,
+  description,
+  name,
+  defaultChecked,
+}: {
+  label: string;
+  description: string;
+  name: string;
+  defaultChecked: boolean;
+}) {
+  return (
+    <label className="flex cursor-pointer items-center justify-between gap-4 rounded-xl border border-gray-200 bg-[#F7F8F5] p-4">
+      <span>
+        <span className="flex items-center gap-2 font-semibold text-gray-900">
+          {defaultChecked ? <Eye size={17} /> : <EyeOff size={17} />}
+          {label}
+        </span>
+        <span className="mt-1 block text-sm text-gray-500">{description}</span>
+      </span>
+      <input
+        name={name}
+        type="checkbox"
+        defaultChecked={defaultChecked}
+        className="h-5 w-5 accent-green-700"
+      />
+    </label>
   );
 }
 
@@ -153,6 +233,12 @@ export function SiteSettingsForm({ content }: { content: SiteSettings }) {
   return (
     <Panel title="Site Settings" text="Manage shared brand, footer, and contact details.">
       <form action={action} className="grid gap-5">
+        <ToggleField
+          label="Show Footer"
+          description="Turn the website footer on or off."
+          name="footerVisible"
+          defaultChecked={content.footerVisible}
+        />
         <div className="grid gap-4 md:grid-cols-2">
           <Field label="Website Name" name="siteName" defaultValue={content.siteName} />
           <Field label="Tagline" name="tagline" defaultValue={content.tagline} />
@@ -178,9 +264,41 @@ export function HomeContentForm({ content }: { content: HomeContent }) {
   return (
     <Panel title="Homepage" text="Manage hero slides, founder preview, and section headings.">
       <form action={action} className="grid gap-7">
+        <div className="grid gap-3 md:grid-cols-2">
+          <ToggleField
+            label="Show Hero"
+            description="Display the homepage slider."
+            name="heroVisible"
+            defaultChecked={content.heroVisible}
+          />
+          <ToggleField
+            label="Show About Preview"
+            description="Display the founder preview block."
+            name="aboutVisible"
+            defaultChecked={content.aboutVisible}
+          />
+          <ToggleField
+            label="Show Devotionals"
+            description="Display featured devotionals."
+            name="devotionalsVisible"
+            defaultChecked={content.devotionalsVisible}
+          />
+          <ToggleField
+            label="Show Books"
+            description="Display featured books."
+            name="booksVisible"
+            defaultChecked={content.booksVisible}
+          />
+        </div>
         {content.slides.map((slide, index) => (
           <div key={index} className="grid gap-4 border-b border-gray-100 pb-7">
             <h3 className="text-lg font-bold">Hero Slide {index + 1}</h3>
+            <ToggleField
+              label={`Enable Slide ${index + 1}`}
+              description="Disabled slides remain saved but do not appear."
+              name={`slide${index + 1}Enabled`}
+              defaultChecked={slide.enabled}
+            />
             <ImageField
               label="Background Image"
               name={`slide${index + 1}Image`}
@@ -234,20 +352,56 @@ export function AboutContentForm({ content }: { content: AboutContent }) {
   return (
     <Panel title="About Page" text="Manage founder biography, images, phone, and social links.">
       <form action={action} className="grid gap-5">
+        <div className="grid gap-3 md:grid-cols-2">
+          <ToggleField
+            label="Show Hero"
+            description="Display the About hero slider."
+            name="heroVisible"
+            defaultChecked={content.heroVisible}
+          />
+          <ToggleField
+            label="Show Founder Image"
+            description="Display the founder profile image block."
+            name="profileVisible"
+            defaultChecked={content.profileVisible}
+          />
+          <ToggleField
+            label="Show Contact Details"
+            description="Display name, phone, and social icons."
+            name="contactVisible"
+            defaultChecked={content.contactVisible}
+          />
+          <ToggleField
+            label="Show Biography"
+            description="Display the About biography text."
+            name="biographyVisible"
+            defaultChecked={content.biographyVisible}
+          />
+          <ToggleField
+            label="Show Highlights"
+            description="Display ministry highlight cards."
+            name="highlightsVisible"
+            defaultChecked={content.highlightsVisible}
+          />
+        </div>
         <div className="grid gap-4 border-b border-gray-100 pb-6">
           <h3 className="text-lg font-bold text-gray-950">
             About Hero Slider
           </h3>
           {[0, 1, 2].map((index) => (
-            <ImageField
-              key={index}
-              label={`Hero Image ${index + 1}`}
-              name={`heroImage${index + 1}`}
-              current={
-                content.heroImages?.[index] ??
-                content.heroImage
-              }
-            />
+            <div key={index} className="grid gap-3 rounded-xl border border-gray-200 p-4">
+              <ToggleField
+                label={`Enable Hero Image ${index + 1}`}
+                description="Keep the image saved while hiding it from the slider."
+                name={`heroImage${index + 1}Enabled`}
+                defaultChecked={content.heroImagesEnabled?.[index] ?? true}
+              />
+              <ImageField
+                label={`Hero Image ${index + 1}`}
+                name={`heroImage${index + 1}`}
+                current={content.heroImages?.[index] ?? content.heroImage}
+              />
+            </div>
           ))}
         </div>
         <ImageField
@@ -297,6 +451,20 @@ export function ContactContentForm({ content }: { content: ContactContent }) {
   return (
     <Panel title="Contact Page" text="Manage the contact page hero and form heading.">
       <form action={action} className="grid gap-5">
+        <div className="grid gap-3 md:grid-cols-2">
+          <ToggleField
+            label="Show Hero"
+            description="Display the Contact page hero."
+            name="heroVisible"
+            defaultChecked={content.heroVisible}
+          />
+          <ToggleField
+            label="Show Contact Form"
+            description="Display the message form."
+            name="formVisible"
+            defaultChecked={content.formVisible}
+          />
+        </div>
         <ImageField label="Hero Image" name="heroImage" current={content.heroImage} />
         <Field label="Hero Title" name="heroTitle" defaultValue={content.heroTitle} />
         <TextArea label="Hero Description" name="heroText" defaultValue={content.heroText} />

@@ -7,6 +7,7 @@ export type HeroSlide = {
   verse: string;
   scripture: string;
   description: string;
+  enabled: boolean;
 };
 
 export type SiteSettings = {
@@ -16,10 +17,15 @@ export type SiteSettings = {
   footerImage: string;
   email: string;
   phone: string;
+  footerVisible: boolean;
 };
 
 export type HomeContent = {
   slides: HeroSlide[];
+  heroVisible: boolean;
+  aboutVisible: boolean;
+  devotionalsVisible: boolean;
+  booksVisible: boolean;
   aboutEyebrow: string;
   aboutTitle: string;
   aboutText: string;
@@ -29,6 +35,12 @@ export type HomeContent = {
 };
 
 export type AboutContent = {
+  heroVisible: boolean;
+  heroImagesEnabled: boolean[];
+  profileVisible: boolean;
+  contactVisible: boolean;
+  biographyVisible: boolean;
+  highlightsVisible: boolean;
   heroEyebrow: string;
   heroTitle: string;
   heroText: string;
@@ -51,6 +63,8 @@ export type AboutContent = {
 };
 
 export type ContactContent = {
+  heroVisible: boolean;
+  formVisible: boolean;
   heroTitle: string;
   heroText: string;
   heroImage: string;
@@ -65,6 +79,7 @@ export const defaultSiteSettings: SiteSettings = {
   footerImage: "/devotional/devo6.jpg",
   email: "hello@graceandtruth.com",
   phone: "+1 (234) 456-7890",
+  footerVisible: true,
 };
 
 export const defaultHomeContent: HomeContent = {
@@ -75,6 +90,7 @@ export const defaultHomeContent: HomeContent = {
       scripture: "Psalm 46:10",
       description:
         "Daily devotionals to strengthen your faith and deepen your walk with God.",
+      enabled: true,
     },
     {
       image: "/herobg2.jpg",
@@ -82,6 +98,7 @@ export const defaultHomeContent: HomeContent = {
       scripture: "Psalm 23:1",
       description:
         "Find peace, hope, and encouragement through the truth of Scripture.",
+      enabled: true,
     },
     {
       image: "/hero3.jpg",
@@ -89,8 +106,13 @@ export const defaultHomeContent: HomeContent = {
       scripture: "Philippians 4:13",
       description:
         "Grow spiritually with Christian books, articles, and devotionals.",
+      enabled: true,
     },
   ],
+  heroVisible: true,
+  aboutVisible: true,
+  devotionalsVisible: true,
+  booksVisible: true,
   aboutEyebrow: "About Prophet Lingston",
   aboutTitle: "A voice of prayer, biblical direction, and spiritual growth.",
   aboutText:
@@ -101,6 +123,12 @@ export const defaultHomeContent: HomeContent = {
 };
 
 export const defaultAboutContent: AboutContent = {
+  heroVisible: true,
+  heroImagesEnabled: [true, true, true],
+  profileVisible: true,
+  contactVisible: true,
+  biographyVisible: true,
+  highlightsVisible: true,
   heroEyebrow: "About the Founder",
   heroTitle: "Prophet Lingston",
   heroText:
@@ -130,6 +158,8 @@ export const defaultAboutContent: AboutContent = {
 };
 
 export const defaultContactContent: ContactContent = {
+  heroVisible: true,
+  formVisible: true,
   heroTitle: "Contact Us",
   heroText:
     "We'd love to hear from you. Reach out for questions, prayer requests, or collaborations.",
@@ -187,6 +217,21 @@ export async function getSiteContent<K extends keyof ContentMap>(
         defaultAboutContent.heroImages[1],
         defaultAboutContent.heroImages[2],
       ];
+    }
+
+    if (!Array.isArray(storedAbout.heroImagesEnabled)) {
+      storedAbout.heroImagesEnabled = defaultAboutContent.heroImagesEnabled;
+    }
+  }
+
+  if (section === "home") {
+    const storedHome = storedContent as Partial<HomeContent>;
+
+    if (Array.isArray(storedHome.slides)) {
+      storedHome.slides = storedHome.slides.map((slide) => ({
+        ...slide,
+        enabled: slide.enabled ?? true,
+      }));
     }
   }
 

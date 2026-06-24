@@ -6,7 +6,7 @@ export default async function ContactPage() {
   return (
     <>
       <main className="bg-[#F7F8F5] min-h-screen">
-        {/* Hero */}
+        {content.heroVisible ? (
         <section
           className="relative h-72 overflow-hidden pb-24 pt-24 text-white sm:h-80 sm:pb-32 sm:pt-28"
           style={{
@@ -29,8 +29,9 @@ export default async function ContactPage() {
             </div>
           </div>
         </section>
+        ) : null}
 
-        {/* Contact Form */}
+        {content.formVisible ? (
         <section className="site-container py-20">
           <div className="mx-auto max-w-4xl rounded-3xl bg-white p-10 shadow-sm">
             <h2 className="mb-7 text-2xl font-bold text-gray-950">
@@ -73,6 +74,7 @@ export default async function ContactPage() {
             </form>
           </div>
         </section>
+        ) : null}
       </main>
     </>
   );

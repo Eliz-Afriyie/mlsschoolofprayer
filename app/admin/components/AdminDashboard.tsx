@@ -170,11 +170,11 @@ export default function AdminDashboard({
                       Dashboard
                     </p>
                     <h2 className="mt-3 text-3xl font-bold">
-                      Manage uploads
+                      Manage website content
                     </h2>
                     <p className="mt-3 max-w-2xl text-white/75">
-                      Create, review, edit, and delete uploaded devotionals and
-                      books.
+                      Update pages, images, site settings, devotionals, and
+                      books from one place.
                     </p>
                   </div>
                   <div className="inline-flex w-fit items-center gap-2 rounded-full bg-white/10 px-4 py-2 text-sm text-white/80">

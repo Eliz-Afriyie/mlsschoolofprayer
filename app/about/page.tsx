@@ -34,6 +34,11 @@ const highlights = [
 
 export default async function AboutPage() {
   const content = await getSiteContent("about");
+  const activeHeroImages = content.heroImages.filter(
+    (image, index) =>
+      image && (content.heroImagesEnabled?.[index] ?? true)
+  );
+  const showSidebar = content.profileVisible || content.contactVisible;
   const socials = [
     {
       label: "Facebook",
@@ -68,15 +73,25 @@ export default async function AboutPage() {
 
   return (
     <main className="min-h-screen bg-[#F7F8F5]">
-      <AboutHero
-        images={content.heroImages?.length ? content.heroImages : [content.heroImage]}
-        eyebrow={content.heroEyebrow}
-        title={content.heroTitle}
-        text={content.heroText}
-      />
+      {content.heroVisible && activeHeroImages.length ? (
+        <AboutHero
+          images={activeHeroImages}
+          eyebrow={content.heroEyebrow}
+          title={content.heroTitle}
+          text={content.heroText}
+        />
+      ) : null}
 
-      <section className="site-container grid gap-10 py-14 sm:py-20 lg:grid-cols-[0.7fr_1.3fr] lg:items-start">
+      <section
+        className={`site-container grid gap-10 py-14 sm:py-20 ${
+          showSidebar
+            ? "lg:grid-cols-[0.7fr_1.3fr] lg:items-start"
+            : "max-w-4xl"
+        }`}
+      >
+        {showSidebar ? (
         <div className="w-full max-w-sm">
+          {content.profileVisible ? (
           <div className="overflow-hidden rounded-2xl bg-green-950 text-white shadow-sm">
             {content.profileImage ? (
               <img
@@ -100,7 +115,9 @@ export default async function AboutPage() {
             </div>
             )}
           </div>
+          ) : null}
 
+          {content.contactVisible ? (
           <div className="mt-5 rounded-2xl border border-gray-200 bg-white p-5 shadow-sm">
             <p className="text-xs font-bold uppercase tracking-[2px] text-green-700">
               Contact
@@ -138,9 +155,13 @@ export default async function AboutPage() {
               </div>
             ) : null}
           </div>
+          ) : null}
         </div>
+        ) : null}
 
         <div>
+          {content.biographyVisible ? (
+          <>
           <h2 className="text-2xl font-bold text-gray-950 sm:text-3xl">
             {content.sectionTitle}
           </h2>
@@ -150,7 +171,10 @@ export default async function AboutPage() {
           <p className="mt-5 text-base leading-7 text-gray-700 sm:text-lg sm:leading-8">
             {content.bioTwo}
           </p>
+          </>
+          ) : null}
 
+          {content.highlightsVisible ? (
           <div className="mt-8 grid gap-4">
             {highlights.map((item) => {
               const Icon = item.icon;
@@ -171,6 +195,7 @@ export default async function AboutPage() {
               );
             })}
           </div>
+          ) : null}
         </div>
       </section>
     </main>

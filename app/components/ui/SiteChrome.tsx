@@ -23,7 +23,7 @@ export default function SiteChrome({
     <>
       <Navbar content={siteContent} />
       {children}
-      <Footer content={siteContent} />
+      {siteContent.footerVisible ? <Footer content={siteContent} /> : null}
     </>
   );
 }

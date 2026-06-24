@@ -40,6 +40,10 @@ function text(formData: FormData, key: string) {
   return String(formData.get(key) ?? "").trim();
 }
 
+function checked(formData: FormData, key: string) {
+  return formData.get(key) === "on";
+}
+
 function formatBookPrice(formData: FormData) {
   const rawAmount = text(formData, "priceAmount") || text(formData, "price");
   const currency = text(formData, "priceCurrency") === "USD" ? "USD" : "GHS";
@@ -276,6 +280,10 @@ export async function removeDevotional(formData: FormData) {
 }
 
 async function saveCmsImage(formData: FormData, name: string, current: string) {
+  if (checked(formData, `${name}Remove`)) {
+    return "";
+  }
+
   return saveImageUpload(formData.get(name), current);
 }
 
@@ -297,6 +305,7 @@ export async function updateSiteSettings(
       ),
       email: text(formData, "email"),
       phone: text(formData, "phone"),
+      footerVisible: checked(formData, "footerVisible"),
     };
 
     await saveSiteContent("site", content);
@@ -328,10 +337,15 @@ export async function updateHomeContent(
         verse: text(formData, `slide${index + 1}Verse`),
         scripture: text(formData, `slide${index + 1}Scripture`),
         description: text(formData, `slide${index + 1}Description`),
+        enabled: checked(formData, `slide${index + 1}Enabled`),
       }))
     );
     const content: HomeContent = {
       slides,
+      heroVisible: checked(formData, "heroVisible"),
+      aboutVisible: checked(formData, "aboutVisible"),
+      devotionalsVisible: checked(formData, "devotionalsVisible"),
+      booksVisible: checked(formData, "booksVisible"),
       aboutEyebrow: text(formData, "aboutEyebrow"),
       aboutTitle: text(formData, "aboutTitle"),
       aboutText: text(formData, "aboutText"),
@@ -382,6 +396,14 @@ export async function updateAboutContent(
       heroText: text(formData, "heroText"),
       heroImage: heroImages[0],
       heroImages,
+      heroVisible: checked(formData, "heroVisible"),
+      heroImagesEnabled: [0, 1, 2].map((index) =>
+        checked(formData, `heroImage${index + 1}Enabled`)
+      ),
+      profileVisible: checked(formData, "profileVisible"),
+      contactVisible: checked(formData, "contactVisible"),
+      biographyVisible: checked(formData, "biographyVisible"),
+      highlightsVisible: checked(formData, "highlightsVisible"),
       profileImage: await saveCmsImage(
         formData,
         "profileImage",
@@ -423,6 +445,8 @@ export async function updateContactContent(
     await ensureAdmin();
     const current = await getSiteContent("contact");
     const content: ContactContent = {
+      heroVisible: checked(formData, "heroVisible"),
+      formVisible: checked(formData, "formVisible"),
       heroTitle: text(formData, "heroTitle"),
       heroText: text(formData, "heroText"),
       heroImage: await saveCmsImage(
