@@ -17,6 +17,14 @@ import {
   updateDevotional,
 } from "@/app/lib/content";
 import { saveImageUpload, savePdfUpload } from "@/app/lib/media";
+import {
+  getSiteContent,
+  saveSiteContent,
+  type AboutContent,
+  type ContactContent,
+  type HomeContent,
+  type SiteSettings,
+} from "@/app/lib/site-content";
 
 export type AdminActionState = {
   ok?: boolean;
@@ -265,4 +273,174 @@ export async function removeDevotional(formData: FormData) {
   revalidatePath("/");
   revalidatePath("/devotional");
   revalidatePath("/admin");
+}
+
+async function saveCmsImage(formData: FormData, name: string, current: string) {
+  return saveImageUpload(formData.get(name), current);
+}
+
+export async function updateSiteSettings(
+  _previousState: AdminActionState,
+  formData: FormData
+): Promise<AdminActionState> {
+  try {
+    await ensureAdmin();
+    const current = await getSiteContent("site");
+    const content: SiteSettings = {
+      siteName: text(formData, "siteName"),
+      tagline: text(formData, "tagline"),
+      footerDescription: text(formData, "footerDescription"),
+      footerImage: await saveCmsImage(
+        formData,
+        "footerImage",
+        current.footerImage
+      ),
+      email: text(formData, "email"),
+      phone: text(formData, "phone"),
+    };
+
+    await saveSiteContent("site", content);
+    revalidatePath("/", "layout");
+    return { ok: true, message: "Site settings saved." };
+  } catch (error) {
+    return {
+      ok: false,
+      message:
+        error instanceof Error ? error.message : "Unable to save settings.",
+    };
+  }
+}
+
+export async function updateHomeContent(
+  _previousState: AdminActionState,
+  formData: FormData
+): Promise<AdminActionState> {
+  try {
+    await ensureAdmin();
+    const current = await getSiteContent("home");
+    const slides = await Promise.all(
+      current.slides.map(async (slide, index) => ({
+        image: await saveCmsImage(
+          formData,
+          `slide${index + 1}Image`,
+          slide.image
+        ),
+        verse: text(formData, `slide${index + 1}Verse`),
+        scripture: text(formData, `slide${index + 1}Scripture`),
+        description: text(formData, `slide${index + 1}Description`),
+      }))
+    );
+    const content: HomeContent = {
+      slides,
+      aboutEyebrow: text(formData, "aboutEyebrow"),
+      aboutTitle: text(formData, "aboutTitle"),
+      aboutText: text(formData, "aboutText"),
+      founderImage: await saveCmsImage(
+        formData,
+        "founderImage",
+        current.founderImage
+      ),
+      devotionalsHeading: text(formData, "devotionalsHeading"),
+      booksHeading: text(formData, "booksHeading"),
+    };
+
+    await saveSiteContent("home", content);
+    revalidatePath("/");
+    return { ok: true, message: "Homepage content saved." };
+  } catch (error) {
+    return {
+      ok: false,
+      message:
+        error instanceof Error ? error.message : "Unable to save homepage.",
+    };
+  }
+}
+
+export async function updateAboutContent(
+  _previousState: AdminActionState,
+  formData: FormData
+): Promise<AdminActionState> {
+  try {
+    await ensureAdmin();
+    const current = await getSiteContent("about");
+    const currentHeroImages =
+      current.heroImages?.length > 0
+        ? current.heroImages
+        : [current.heroImage, current.heroImage, current.heroImage];
+    const heroImages = await Promise.all(
+      [0, 1, 2].map((index) =>
+        saveCmsImage(
+          formData,
+          `heroImage${index + 1}`,
+          currentHeroImages[index] ?? current.heroImage
+        )
+      )
+    );
+    const content: AboutContent = {
+      heroEyebrow: text(formData, "heroEyebrow"),
+      heroTitle: text(formData, "heroTitle"),
+      heroText: text(formData, "heroText"),
+      heroImage: heroImages[0],
+      heroImages,
+      profileImage: await saveCmsImage(
+        formData,
+        "profileImage",
+        current.profileImage
+      ),
+      sectionTitle: text(formData, "sectionTitle"),
+      bioOne: text(formData, "bioOne"),
+      bioTwo: text(formData, "bioTwo"),
+      founderName: text(formData, "founderName"),
+      phone: text(formData, "phone"),
+      facebookHandle: text(formData, "facebookHandle"),
+      facebookUrl: text(formData, "facebookUrl"),
+      instagramHandle: text(formData, "instagramHandle"),
+      instagramUrl: text(formData, "instagramUrl"),
+      youtubeHandle: text(formData, "youtubeHandle"),
+      youtubeUrl: text(formData, "youtubeUrl"),
+      tiktokHandle: text(formData, "tiktokHandle"),
+      tiktokUrl: text(formData, "tiktokUrl"),
+    };
+
+    await saveSiteContent("about", content);
+    revalidatePath("/");
+    revalidatePath("/about");
+    return { ok: true, message: "About page content saved." };
+  } catch (error) {
+    return {
+      ok: false,
+      message:
+        error instanceof Error ? error.message : "Unable to save About page.",
+    };
+  }
+}
+
+export async function updateContactContent(
+  _previousState: AdminActionState,
+  formData: FormData
+): Promise<AdminActionState> {
+  try {
+    await ensureAdmin();
+    const current = await getSiteContent("contact");
+    const content: ContactContent = {
+      heroTitle: text(formData, "heroTitle"),
+      heroText: text(formData, "heroText"),
+      heroImage: await saveCmsImage(
+        formData,
+        "heroImage",
+        current.heroImage
+      ),
+      formTitle: text(formData, "formTitle"),
+    };
+
+    await saveSiteContent("contact", content);
+    revalidatePath("/contact");
+    return { ok: true, message: "Contact page content saved." };
+  } catch (error) {
+    return {
+      ok: false,
+      message:
+        error instanceof Error ? error.message : "Unable to save Contact page.",
+    };
+  }
 }

@@ -56,6 +56,21 @@ on public.books (status, created_at desc);
 create index if not exists devotionals_status_date_idx
 on public.devotionals (status, devotional_date desc);
 
+create table if not exists public.site_content (
+  section text primary key,
+  content jsonb not null default '{}'::jsonb,
+  updated_at timestamptz not null default now()
+);
+
+alter table public.site_content enable row level security;
+
+drop policy if exists "Site content is publicly readable" on public.site_content;
+create policy "Site content is publicly readable"
+on public.site_content
+for select
+to anon
+using (true);
+
 insert into storage.buckets (id, name, public, file_size_limit, allowed_mime_types)
 values (
   'media',

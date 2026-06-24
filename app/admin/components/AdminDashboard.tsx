@@ -10,8 +10,20 @@ import {
   ShieldCheck,
 } from "lucide-react";
 import type { Book, Devotional } from "@/app/lib/types";
+import type {
+  AboutContent,
+  ContactContent,
+  HomeContent,
+  SiteSettings,
+} from "@/app/lib/site-content";
 import { BookCreateForm, DevotionalCreateForm } from "./AdminForms";
 import { BookTable, DevotionalTable } from "./AdminContentTables";
+import {
+  AboutContentForm,
+  ContactContentForm,
+  HomeContentForm,
+  SiteSettingsForm,
+} from "./AdminCmsForms";
 import type { AdminActionState } from "../actions";
 import AdminSidebar, { type AdminSection } from "./AdminSidebar";
 import {
@@ -47,9 +59,20 @@ function formatDate(value?: string) {
 type Props = {
   books: Book[];
   devotionals: Devotional[];
+  siteContent: SiteSettings;
+  homeContent: HomeContent;
+  aboutContent: AboutContent;
+  contactContent: ContactContent;
 };
 
-export default function AdminDashboard({ books, devotionals }: Props) {
+export default function AdminDashboard({
+  books,
+  devotionals,
+  siteContent,
+  homeContent,
+  aboutContent,
+  contactContent,
+}: Props) {
   const [section, setSection] = useState<AdminSection>("overview");
   const [modal, setModal] = useState<Modal>(null);
   const [toast, setToast] = useState<ToastState>(null);
@@ -295,6 +318,22 @@ export default function AdminDashboard({ books, devotionals }: Props) {
 
           {section === "books" ? (
             <BookTable books={books} onAdd={() => setModal("book")} />
+          ) : null}
+
+          {section === "home" ? (
+            <HomeContentForm content={homeContent} />
+          ) : null}
+
+          {section === "about" ? (
+            <AboutContentForm content={aboutContent} />
+          ) : null}
+
+          {section === "contact" ? (
+            <ContactContentForm content={contactContent} />
+          ) : null}
+
+          {section === "site" ? (
+            <SiteSettingsForm content={siteContent} />
           ) : null}
         </section>
       </div>

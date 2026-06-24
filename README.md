@@ -40,6 +40,19 @@ Uploaded images and PDFs are saved into the public Supabase Storage bucket named
 `media`. The app stores the returned public file URL in the matching database
 row.
 
+### Website Content Manager
+
+To enable editing homepage, About, Contact, navbar, and footer content:
+
+1. Open the Supabase **SQL Editor**.
+2. Paste and run `supabase/cms.sql` once.
+3. Redeploy or restart the app.
+4. Log in to `/admin`.
+
+The admin sidebar will include Homepage, About Page, Contact Page, and Site
+Settings. Text is stored in the `site_content` table as structured JSON. Images
+are uploaded to the existing `media` storage bucket.
+
 Admin login is controlled by these environment variables:
 
 ```env

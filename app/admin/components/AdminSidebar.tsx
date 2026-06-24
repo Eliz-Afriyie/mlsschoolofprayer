@@ -5,17 +5,33 @@ import Link from "next/link";
 import {
   ArrowLeft,
   BookOpen,
+  Contact,
   FileText,
+  Home,
   LayoutDashboard,
+  Settings,
   ShieldCheck,
+  UserRound,
   X,
 } from "lucide-react";
 import { logoutAdmin } from "../actions";
+import { ConfirmationModal } from "./AdminDashboardWidgets";
 
-export type AdminSection = "overview" | "devotionals" | "books";
+export type AdminSection =
+  | "overview"
+  | "home"
+  | "about"
+  | "contact"
+  | "site"
+  | "devotionals"
+  | "books";
 
 const menu = [
   { id: "overview", label: "Overview", icon: LayoutDashboard },
+  { id: "home", label: "Homepage", icon: Home },
+  { id: "about", label: "About Page", icon: UserRound },
+  { id: "contact", label: "Contact Page", icon: Contact },
+  { id: "site", label: "Site Settings", icon: Settings },
   { id: "devotionals", label: "Devotionals", icon: FileText },
   { id: "books", label: "Books", icon: BookOpen },
 ] as const;
@@ -91,35 +107,18 @@ function SidebarContent({
       </div>
 
       {confirmSignOut ? (
-        <div className="fixed inset-0 z-[120] flex items-center justify-center bg-black/55 px-4">
-          <button
-            type="button"
-            className="absolute inset-0 h-full w-full cursor-default"
-            onClick={() => setConfirmSignOut(false)}
-            aria-label="Cancel sign out"
-          />
-          <div className="relative z-10 w-full max-w-sm rounded-2xl bg-white p-6 shadow-2xl">
-            <h2 className="text-xl font-bold text-gray-950">Sign out?</h2>
-            <p className="mt-2 text-sm leading-6 text-gray-600">
-              You will leave the admin portal and need to log in again to manage
-              content.
-            </p>
-            <div className="mt-6 grid gap-3 sm:grid-cols-2">
-              <button
-                type="button"
-                onClick={() => setConfirmSignOut(false)}
-                className="rounded-xl border border-gray-200 px-4 py-3 text-sm font-semibold text-gray-700 transition hover:bg-gray-100"
-              >
-                Cancel
-              </button>
-              <form action={logoutAdmin}>
-                <button className="w-full rounded-xl bg-red-600 px-4 py-3 text-sm font-semibold text-white transition hover:bg-red-700">
-                  Yes, sign out
-                </button>
-              </form>
-            </div>
-          </div>
-        </div>
+        <ConfirmationModal
+          title="Sign out?"
+          description="You will leave the admin portal and need to log in again to manage content."
+          onClose={() => setConfirmSignOut(false)}
+          tone="warning"
+        >
+          <form action={logoutAdmin}>
+            <button className="w-full rounded-xl bg-amber-500 px-5 py-3 text-sm font-semibold text-white transition hover:bg-amber-600 sm:w-auto">
+              Yes, sign out
+            </button>
+          </form>
+        </ConfirmationModal>
       ) : null}
     </>
   );

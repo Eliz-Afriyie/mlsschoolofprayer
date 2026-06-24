@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { FormEvent, useEffect, useState } from "react";
 import { Menu, Search, UserCircle, X } from "lucide-react";
+import type { SiteSettings } from "@/app/lib/site-content";
 
 const navLinks = [
   { name: "Home", href: "/" },
@@ -13,7 +14,7 @@ const navLinks = [
   { name: "Contact", href: "/contact" },
 ];
 
-export default function Navbar() {
+export default function Navbar({ content }: { content: SiteSettings }) {
   const pathname = usePathname();
   const router = useRouter();
   const [searchOpen, setSearchOpen] = useState(false);
@@ -89,7 +90,7 @@ export default function Navbar() {
                   transparent ? "text-white" : "text-[#17361D]"
                 }`}
               >
-                mlsschoolofprayer
+                {content.siteName}
               </h1>
 
               <p
@@ -97,7 +98,7 @@ export default function Navbar() {
                   transparent ? "text-white/75" : "text-gray-500"
                 }`}
               >
-                Reflections of His Word & Prayer
+                {content.tagline}
               </p>
             </div>
           </Link>
@@ -301,7 +302,7 @@ export default function Navbar() {
               <p className="text-xs font-semibold uppercase tracking-[3px] text-green-700">
                 Menu
               </p>
-              <h2 className="mt-2 text-2xl font-bold">mlsschoolofprayer</h2>
+              <h2 className="mt-2 text-2xl font-bold">{content.siteName}</h2>
             </div>
             <button
               type="button"
@@ -344,7 +345,7 @@ export default function Navbar() {
           </nav>
 
           <p className="mt-auto border-t border-gray-100 pt-5 text-sm leading-6 text-gray-500">
-            Reflections of His Word & Prayer
+            {content.tagline}
           </p>
         </div>
       </div>

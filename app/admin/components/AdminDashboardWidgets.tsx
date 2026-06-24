@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import { FileText, X } from "lucide-react";
+import { AlertTriangle, FileText, X } from "lucide-react";
 
 export type ToastState = {
   ok?: boolean;
@@ -103,6 +103,63 @@ export function EmptyState({
         {text}
       </p>
       {action ? <div className="mt-5">{action}</div> : null}
+    </div>
+  );
+}
+
+export function ConfirmationModal({
+  title,
+  description,
+  onClose,
+  children,
+  tone = "danger",
+}: {
+  title: string;
+  description: string;
+  onClose: () => void;
+  children: ReactNode;
+  tone?: "danger" | "warning";
+}) {
+  const warning = tone === "warning";
+
+  return (
+    <div
+      className="fixed inset-0 z-[140] flex items-center justify-center bg-black/60 px-4 backdrop-blur-sm"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="confirmation-title"
+    >
+      <button
+        type="button"
+        className="absolute inset-0 h-full w-full cursor-default"
+        onClick={onClose}
+        aria-label="Cancel action"
+      />
+      <div className="relative z-10 w-full max-w-md rounded-2xl border border-gray-200 bg-white p-6 shadow-2xl">
+        <div
+          className={`flex h-12 w-12 items-center justify-center rounded-full ${
+            warning
+              ? "bg-amber-100 text-amber-700"
+              : "bg-red-100 text-red-700"
+          }`}
+        >
+          <AlertTriangle size={23} />
+        </div>
+        <h2 id="confirmation-title" className="mt-5 text-xl font-bold text-gray-950">
+          {title}
+        </h2>
+        <p className="mt-2 text-sm leading-6 text-gray-600">{description}</p>
+        <div className="mt-6 flex flex-col-reverse gap-3 sm:flex-row sm:justify-end">
+          <button
+            type="button"
+            onClick={onClose}
+            className="rounded-xl border border-gray-200 px-5 py-3 text-sm font-semibold text-gray-700 transition hover:bg-gray-100"
+          >
+            Cancel
+          </button>
+          {children}
+        </div>
+      </div>
     </div>
   );
 }

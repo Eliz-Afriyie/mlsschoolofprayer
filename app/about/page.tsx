@@ -1,4 +1,18 @@
-import { BookOpen, Church, ImageIcon, Mic } from "lucide-react";
+import {
+  BookOpen,
+  Church,
+  ImageIcon,
+  Mic,
+  Phone,
+} from "lucide-react";
+import {
+  FaFacebookF,
+  FaInstagram,
+  FaTiktok,
+  FaYoutube,
+} from "react-icons/fa";
+import { getSiteContent } from "@/app/lib/site-content";
+import AboutHero from "./AboutHero";
 
 const highlights = [
   {
@@ -18,74 +32,123 @@ const highlights = [
   },
 ];
 
-export default function AboutPage() {
+export default async function AboutPage() {
+  const content = await getSiteContent("about");
+  const socials = [
+    {
+      label: "Facebook",
+      handle: content.facebookHandle,
+      href: content.facebookUrl,
+      icon: FaFacebookF,
+      className: "bg-[#1877F2] text-white hover:bg-[#166FE5]",
+    },
+    {
+      label: "Instagram",
+      handle: content.instagramHandle,
+      href: content.instagramUrl,
+      icon: FaInstagram,
+      className:
+        "bg-gradient-to-br from-[#833AB4] via-[#E1306C] to-[#FCAF45] text-white",
+    },
+    {
+      label: "YouTube",
+      handle: content.youtubeHandle,
+      href: content.youtubeUrl,
+      icon: FaYoutube,
+      className: "bg-[#FF0000] text-white hover:bg-[#D90000]",
+    },
+    {
+      label: "TikTok",
+      handle: content.tiktokHandle,
+      href: content.tiktokUrl,
+      icon: FaTiktok,
+      className: "bg-gray-950 text-white hover:bg-black",
+    },
+  ].filter((item) => item.href.trim());
+
   return (
     <main className="min-h-screen bg-[#F7F8F5]">
-      <section
-        className="relative overflow-hidden py-16 text-white sm:py-24"
-        style={{
-          backgroundImage: "url('/devotional/devo-hero.jpg')",
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-        }}
-      >
-        <video
-          autoPlay
-          muted
-          loop
-          playsInline
-          poster="/devotional/devo-hero.jpg"
-          className="absolute inset-0 h-full w-full object-cover"
-        >
-          <source src="/videos/about-bg.mp4" type="video/mp4" />
-        </video>
-        <div className="absolute inset-0 bg-gradient-to-r from-[#0B2D16]/95 via-[#0B2D16]/80 to-[#0B2D16]/35" />
-
-        <div className="site-container relative z-10">
-          <p className="mb-4 text-sm font-semibold uppercase tracking-[3px] text-amber-300">
-            About the Founder
-          </p>
-          <h1 className="text-4xl font-bold sm:text-5xl md:text-6xl">
-            Prophet Lingston
-          </h1>
-          <p className="mt-6 max-w-3xl text-base leading-7 text-gray-200 sm:text-lg sm:leading-8">
-            Associate pastor at Fountain Gate Chapel International, Desert
-            Pastures, and the voice behind the School of Prayer.
-          </p>
-        </div>
-      </section>
+      <AboutHero
+        images={content.heroImages?.length ? content.heroImages : [content.heroImage]}
+        eyebrow={content.heroEyebrow}
+        title={content.heroTitle}
+        text={content.heroText}
+      />
 
       <section className="site-container grid gap-10 py-14 sm:py-20 lg:grid-cols-[0.7fr_1.3fr] lg:items-start">
-        <div className="w-full max-w-sm overflow-hidden rounded-2xl bg-green-950 text-white shadow-sm">
-          <div className="flex aspect-[4/5] min-h-[340px] items-center justify-center p-6">
-            <div className="text-center">
-              <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-white/10">
-                <ImageIcon size={28} />
+        <div className="w-full max-w-sm">
+          <div className="overflow-hidden rounded-2xl bg-green-950 text-white shadow-sm">
+            {content.profileImage ? (
+              <img
+                src={content.profileImage}
+                alt={content.founderName}
+                className="aspect-[4/5] min-h-[340px] w-full object-cover"
+              />
+            ) : (
+            <div className="flex aspect-[4/5] min-h-[340px] items-center justify-center p-6">
+              <div className="text-center">
+                <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-white/10">
+                  <ImageIcon size={28} />
+                </div>
+                <p className="text-sm font-semibold uppercase tracking-[3px] text-amber-300">
+                  Photo Coming Soon
+                </p>
+                <p className="mt-3 text-white/70">
+                  Add Prophet Lingston&apos;s image here when ready.
+                </p>
               </div>
-              <p className="text-sm font-semibold uppercase tracking-[3px] text-amber-300">
-                Photo Coming Soon
-              </p>
-              <p className="mt-3 text-white/70">
-                Add Prophet Lingston&apos;s image here when ready.
-              </p>
             </div>
+            )}
+          </div>
+
+          <div className="mt-5 rounded-2xl border border-gray-200 bg-white p-5 shadow-sm">
+            <p className="text-xs font-bold uppercase tracking-[2px] text-green-700">
+              Contact
+            </p>
+            <h2 className="mt-2 text-xl font-bold text-gray-950">
+              {content.founderName}
+            </h2>
+            <a
+              href={`tel:${content.phone.replace(/\s/g, "")}`}
+              className="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-gray-700 transition hover:text-green-800"
+            >
+              <Phone size={17} />
+              {content.phone}
+            </a>
+
+            {socials.length ? (
+              <div className="mt-5 flex flex-wrap gap-3">
+                {socials.map((item) => {
+                  const Icon = item.icon;
+
+                  return (
+                    <a
+                      key={item.label}
+                      href={item.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label={`${item.label}: ${item.handle}`}
+                      title={item.label}
+                      className={`inline-flex h-11 w-11 items-center justify-center rounded-full shadow-sm transition hover:-translate-y-0.5 hover:shadow-md ${item.className}`}
+                    >
+                      <Icon size={20} />
+                    </a>
+                  );
+                })}
+              </div>
+            ) : null}
           </div>
         </div>
 
         <div>
           <h2 className="text-2xl font-bold text-gray-950 sm:text-3xl">
-            About Prophet Lingston
+            {content.sectionTitle}
           </h2>
           <p className="mt-5 text-base leading-7 text-gray-700 sm:text-lg sm:leading-8">
-            Prophet Lingston is an associate pastor at Fountain Gate Chapel
-            International, Desert Pastures. His ministry is centered on helping
-            believers grow in prayer, receive biblical direction, and walk with
-            spiritual discipline and confidence.
+            {content.bioOne}
           </p>
           <p className="mt-5 text-base leading-7 text-gray-700 sm:text-lg sm:leading-8">
-            Through the School of Prayer, he provides strategic prayer
-            education, devotionals, teachings, and faith-building resources for
-            the body of Christ.
+            {content.bioTwo}
           </p>
 
           <div className="mt-8 grid gap-4">

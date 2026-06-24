@@ -2,13 +2,17 @@ import Link from "next/link";
 import DevotionalCard from "./DevotionalCard";
 import { getDevotionals } from "@/app/lib/content";
 
-export default async function FeaturedDevotionals() {
+export default async function FeaturedDevotionals({
+  heading = "Latest Devotionals",
+}: {
+  heading?: string;
+}) {
   const devotionals = await getDevotionals();
 
   return (
     <section className="site-container">
       <div className="mb-8 flex items-start justify-between gap-4">
-        <h2 className="text-2xl font-bold sm:text-3xl">Latest Devotionals</h2>
+        <h2 className="text-2xl font-bold sm:text-3xl">{heading}</h2>
 
         <Link
           href="/devotional"

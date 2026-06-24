@@ -14,6 +14,7 @@ import {
 import type { Book, Devotional } from "@/app/lib/types";
 import {
   EmptyState,
+  ConfirmationModal,
   Input,
   ModalShell,
   PaginationControls,
@@ -44,6 +45,8 @@ function ActionSheet({
   id,
   position,
 }: ActionSheetProps) {
+  const [confirmDelete, setConfirmDelete] = useState(false);
+
   return (
     <div className="fixed inset-0 z-[90]">
       <button
@@ -67,21 +70,30 @@ function ActionSheet({
           <Eye size={16} />
           View/Edit
         </button>
-        <form action={deleteAction}>
-          <input type="hidden" name="id" value={id} />
-          <button
-            onClick={(event) => {
-              if (!confirm(`Delete "${title}"?`)) {
-                event.preventDefault();
-              }
-            }}
-            className="inline-flex w-full items-center gap-2 rounded-lg px-3 py-2 text-sm font-semibold text-red-700 hover:bg-red-50"
-          >
-            <Trash2 size={16} />
-            Delete
-          </button>
-        </form>
+        <button
+          type="button"
+          onClick={() => setConfirmDelete(true)}
+          className="inline-flex w-full items-center gap-2 rounded-lg px-3 py-2 text-sm font-semibold text-red-700 hover:bg-red-50"
+        >
+          <Trash2 size={16} />
+          Delete
+        </button>
       </div>
+
+      {confirmDelete ? (
+        <ConfirmationModal
+          title={`Delete "${title}"?`}
+          description="This permanently removes the item from the website and database. This action cannot be undone."
+          onClose={() => setConfirmDelete(false)}
+        >
+          <form action={deleteAction}>
+            <input type="hidden" name="id" value={id} />
+            <button className="w-full rounded-xl bg-red-600 px-5 py-3 text-sm font-semibold text-white transition hover:bg-red-700 sm:w-auto">
+              Yes, delete
+            </button>
+          </form>
+        </ConfirmationModal>
+      ) : null}
     </div>
   );
 }

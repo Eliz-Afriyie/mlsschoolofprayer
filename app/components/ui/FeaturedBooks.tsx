@@ -2,13 +2,17 @@ import Link from "next/link";
 import BookCard from "./BookCard";
 import { getBooks } from "@/app/lib/content";
 
-export default async function FeaturedBooks() {
+export default async function FeaturedBooks({
+  heading = "Featured Books",
+}: {
+  heading?: string;
+}) {
   const books = await getBooks();
 
   return (
     <section className="site-container">
       <div className="mb-8 flex items-start justify-between gap-4">
-        <h2 className="text-2xl font-bold sm:text-3xl">Featured Books</h2>
+        <h2 className="text-2xl font-bold sm:text-3xl">{heading}</h2>
 
         <Link
           href="/books"

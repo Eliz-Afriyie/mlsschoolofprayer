@@ -3,11 +3,14 @@
 import { usePathname } from "next/navigation";
 import Footer from "./Footer";
 import Navbar from "./Navbar";
+import type { SiteSettings } from "@/app/lib/site-content";
 
 export default function SiteChrome({
   children,
+  siteContent,
 }: {
   children: React.ReactNode;
+  siteContent: SiteSettings;
 }) {
   const pathname = usePathname();
   const hideChrome = pathname.startsWith("/admin");
@@ -18,9 +21,9 @@ export default function SiteChrome({
 
   return (
     <>
-      <Navbar />
+      <Navbar content={siteContent} />
       {children}
-      <Footer />
+      <Footer content={siteContent} />
     </>
   );
 }

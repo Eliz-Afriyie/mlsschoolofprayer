@@ -21,17 +21,11 @@ export default function BookCard({
 
   return (
     <div className="overflow-hidden rounded-2xl border border-gray-100 bg-white shadow">
-      <div className="relative">
-        <img
-          src={image}
-          alt={title}
-          className="h-56 w-full object-cover sm:h-60"
-        />
-        <div className="absolute right-3 top-3 inline-flex items-center gap-1 rounded-full bg-white/95 px-3 py-1.5 text-sm font-bold text-yellow-600 shadow-sm">
-          <span className="text-lg leading-none">&#9733;</span>
-          <span>{formattedRating}</span>
-        </div>
-      </div>
+      <img
+        src={image}
+        alt={title}
+        className="h-56 w-full object-cover sm:h-60"
+      />
 
       <div className="p-4 sm:p-5">
         <h3 className="truncate text-lg font-semibold leading-7 sm:text-xl">
@@ -44,7 +38,13 @@ export default function BookCard({
           {description}
         </p>
 
-        <p className="mt-4 text-lg font-bold text-green-700">{price}</p>
+        <div className="mt-4 flex items-center justify-between gap-4">
+          <p className="text-lg font-bold text-green-700">{price}</p>
+          <p className="inline-flex items-center gap-1 text-sm font-bold text-yellow-600">
+            <span className="text-xl leading-none">&#9733;</span>
+            <span>{formattedRating}</span>
+          </p>
+        </div>
 
         <div className="mt-4">
           {amazonUrl ? (
