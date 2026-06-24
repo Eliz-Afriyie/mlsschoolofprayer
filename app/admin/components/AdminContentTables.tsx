@@ -418,7 +418,11 @@ export function DevotionalTable({
               maxLength={500}
               className="rounded-lg border border-gray-200 px-3 py-2 text-sm outline-none focus:border-green-700"
             />
-            <FileField name="image" label="Cover Image" accept="image/*" />
+            <FileField
+              name="image"
+              label="Cover Image"
+              accept="image/jpeg,image/png,image/webp,image/gif"
+            />
             <FileField
               name="pdf"
               label="Downloadable PDF"
@@ -632,7 +636,11 @@ export function BookTable({ books, onAdd }: { books: Book[]; onAdd: () => void }
               maxLength={400}
               className="rounded-lg border border-gray-200 px-3 py-2 text-sm outline-none focus:border-green-700"
             />
-            <FileField name="image" label="Cover Image" accept="image/*" />
+            <FileField
+              name="image"
+              label="Cover Image"
+              accept="image/jpeg,image/png,image/webp,image/gif"
+            />
             <SaveButton />
           </form>
         </ModalShell>

@@ -4,6 +4,12 @@ import path from "path";
 import { getSupabaseAdmin, hasSupabaseConfig } from "./supabase";
 
 const bucket = "media";
+const allowedImageTypes = new Set([
+  "image/jpeg",
+  "image/png",
+  "image/webp",
+  "image/gif",
+]);
 
 async function uploadSupabaseFile(
   file: File,
@@ -60,8 +66,8 @@ export async function saveImageUpload(
     return fallback;
   }
 
-  if (!file.type.startsWith("image/")) {
-    throw new Error("Please upload an image file.");
+  if (!allowedImageTypes.has(file.type)) {
+    throw new Error("Please upload a JPG, PNG, WebP, or GIF image.");
   }
 
   if (file.size > 2 * 1024 * 1024) {

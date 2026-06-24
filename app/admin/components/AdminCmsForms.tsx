@@ -98,7 +98,7 @@ function ImageField({
       <input
         name={name}
         type="file"
-        accept="image/*"
+        accept="image/jpeg,image/png,image/webp,image/gif"
         className="rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm"
       />
       <input

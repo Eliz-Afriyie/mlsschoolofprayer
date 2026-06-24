@@ -222,7 +222,7 @@ export function DevotionalCreateForm({ onResult, onSuccess }: FormProps) {
           name="image"
           label="Cover Image"
           type="file"
-          accept="image/*"
+          accept="image/jpeg,image/png,image/webp,image/gif"
           required={false}
         />
         <Field
@@ -332,7 +332,7 @@ export function BookCreateForm({ onResult, onSuccess }: FormProps) {
           name="image"
           label="Cover Image"
           type="file"
-          accept="image/*"
+          accept="image/jpeg,image/png,image/webp,image/gif"
           required={false}
         />
         <Message state={state} />
