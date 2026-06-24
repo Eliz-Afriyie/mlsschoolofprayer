@@ -3,17 +3,16 @@
 import { useEffect, useState } from "react";
 
 export default function AboutHero({
-  images,
+  slides,
   eyebrow,
   title,
   text,
 }: {
-  images: string[];
+  slides: { image: string; position: string }[];
   eyebrow: string;
   title: string;
   text: string;
 }) {
-  const slides = images.filter(Boolean);
   const [current, setCurrent] = useState(0);
 
   useEffect(() => {
@@ -32,13 +31,16 @@ export default function AboutHero({
 
   return (
     <section className="relative min-h-[360px] overflow-hidden py-16 text-white sm:min-h-[430px] sm:py-24">
-      {slides.map((image, index) => (
+      {slides.map((slide, index) => (
         <div
-          key={`${image}-${index}`}
-          className={`absolute inset-0 bg-cover bg-center transition-opacity duration-1000 ${
+          key={`${slide.image}-${index}`}
+          className={`absolute inset-0 bg-cover transition-opacity duration-1000 ${
             current === index ? "opacity-100" : "opacity-0"
           }`}
-          style={{ backgroundImage: `url('${image}')` }}
+          style={{
+            backgroundImage: `url('${slide.image}')`,
+            backgroundPosition: slide.position,
+          }}
         />
       ))}
       <div className="absolute inset-0 bg-gradient-to-r from-[#0B2D16]/95 via-[#0B2D16]/80 to-[#0B2D16]/35" />
@@ -55,9 +57,9 @@ export default function AboutHero({
 
       {slides.length > 1 ? (
         <div className="absolute bottom-6 left-1/2 z-10 flex -translate-x-1/2 gap-2">
-          {slides.map((image, index) => (
+          {slides.map((slide, index) => (
             <button
-              key={`${image}-dot`}
+              key={`${slide.image}-dot`}
               type="button"
               onClick={() => setCurrent(index)}
               aria-label={`Show About hero image ${index + 1}`}

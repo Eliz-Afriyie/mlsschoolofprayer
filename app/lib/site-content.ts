@@ -46,6 +46,7 @@ export type AboutContent = {
   heroText: string;
   heroImage: string;
   heroImages: string[];
+  heroImagePositions: string[];
   profileImage: string;
   sectionTitle: string;
   bioOne: string;
@@ -139,6 +140,7 @@ export const defaultAboutContent: AboutContent = {
     "/herobg2.jpg",
     "/hero3.jpg",
   ],
+  heroImagePositions: ["center top", "center center", "center center"],
   profileImage: "",
   sectionTitle: "About Prophet Lingston",
   bioOne:
@@ -221,6 +223,11 @@ export async function getSiteContent<K extends keyof ContentMap>(
 
     if (!Array.isArray(storedAbout.heroImagesEnabled)) {
       storedAbout.heroImagesEnabled = defaultAboutContent.heroImagesEnabled;
+    }
+
+    if (!Array.isArray(storedAbout.heroImagePositions)) {
+      storedAbout.heroImagePositions =
+        defaultAboutContent.heroImagePositions;
     }
   }
 

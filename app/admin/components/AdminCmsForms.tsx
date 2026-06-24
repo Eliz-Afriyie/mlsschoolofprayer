@@ -1,6 +1,6 @@
 "use client";
 
-import { useActionState, useState } from "react";
+import { useActionState, useEffect, useState } from "react";
 import { useFormStatus } from "react-dom";
 import { Eye, EyeOff, Loader2, RotateCcw, Save, Trash2 } from "lucide-react";
 import type {
@@ -17,8 +17,17 @@ import {
   type AdminActionState,
 } from "../actions";
 import { ConfirmationModal } from "./AdminDashboardWidgets";
+import { showAdminToast } from "./admin-toast";
 
 const initialState: AdminActionState = { message: "" };
+
+function useActionToast(state: AdminActionState) {
+  useEffect(() => {
+    if (state.message) {
+      showAdminToast(state);
+    }
+  }, [state]);
+}
 
 function Field({
   label,
@@ -181,6 +190,31 @@ function ToggleField({
   );
 }
 
+function ImagePositionField({
+  name,
+  defaultValue,
+}: {
+  name: string;
+  defaultValue: string;
+}) {
+  return (
+    <label className="grid gap-2 text-sm font-semibold text-gray-700">
+      Image Position
+      <select
+        name={name}
+        defaultValue={defaultValue}
+        className="h-11 rounded-lg border border-gray-200 bg-white px-3 text-sm outline-none focus:border-green-700"
+      >
+        <option value="center top">Top</option>
+        <option value="center center">Center</option>
+        <option value="center bottom">Bottom</option>
+        <option value="left center">Left</option>
+        <option value="right center">Right</option>
+      </select>
+    </label>
+  );
+}
+
 function SaveButton() {
   const { pending } = useFormStatus();
 
@@ -229,6 +263,7 @@ function Panel({
 
 export function SiteSettingsForm({ content }: { content: SiteSettings }) {
   const [state, action] = useActionState(updateSiteSettings, initialState);
+  useActionToast(state);
 
   return (
     <Panel title="Site Settings" text="Manage shared brand, footer, and contact details.">
@@ -260,6 +295,7 @@ export function SiteSettingsForm({ content }: { content: SiteSettings }) {
 
 export function HomeContentForm({ content }: { content: HomeContent }) {
   const [state, action] = useActionState(updateHomeContent, initialState);
+  useActionToast(state);
 
   return (
     <Panel title="Homepage" text="Manage hero slides, founder preview, and section headings.">
@@ -348,6 +384,7 @@ export function HomeContentForm({ content }: { content: HomeContent }) {
 
 export function AboutContentForm({ content }: { content: AboutContent }) {
   const [state, action] = useActionState(updateAboutContent, initialState);
+  useActionToast(state);
 
   return (
     <Panel title="About Page" text="Manage founder biography, images, phone, and social links.">
@@ -401,6 +438,13 @@ export function AboutContentForm({ content }: { content: AboutContent }) {
                 name={`heroImage${index + 1}`}
                 current={content.heroImages?.[index] ?? content.heroImage}
               />
+              <ImagePositionField
+                name={`heroImage${index + 1}Position`}
+                defaultValue={
+                  content.heroImagePositions?.[index] ??
+                  (index === 0 ? "center top" : "center center")
+                }
+              />
             </div>
           ))}
         </div>
@@ -447,6 +491,7 @@ export function AboutContentForm({ content }: { content: AboutContent }) {
 
 export function ContactContentForm({ content }: { content: ContactContent }) {
   const [state, action] = useActionState(updateContactContent, initialState);
+  useActionToast(state);
 
   return (
     <Panel title="Contact Page" text="Manage the contact page hero and form heading.">

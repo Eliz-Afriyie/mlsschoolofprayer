@@ -34,6 +34,7 @@ import {
   ToastBanner,
   type ToastState,
 } from "./AdminDashboardWidgets";
+import { adminToastEvent } from "./admin-toast";
 
 type Modal = "devotional" | "book" | null;
 const recentPageSize = 5;
@@ -128,6 +129,19 @@ export default function AdminDashboard({
     return () => window.clearTimeout(timeout);
   }, [toast]);
 
+  useEffect(() => {
+    function handleToast(event: Event) {
+      const detail = (event as CustomEvent<AdminActionState>).detail;
+
+      if (detail?.message) {
+        setToast(detail);
+      }
+    }
+
+    window.addEventListener(adminToastEvent, handleToast);
+    return () => window.removeEventListener(adminToastEvent, handleToast);
+  }, []);
+
   const handleFormResult = useCallback((state: AdminActionState) => {
     setToast({
       ok: state.ok,
@@ -141,7 +155,9 @@ export default function AdminDashboard({
 
   return (
     <main className="min-h-screen bg-[#F7F8F5]">
-      {toast ? <ToastBanner toast={toast} /> : null}
+      {toast ? (
+        <ToastBanner toast={toast} onClose={() => setToast(null)} />
+      ) : null}
 
       <div className="grid min-h-screen gap-6 px-4 py-5 sm:px-6 lg:grid-cols-[280px_1fr] lg:px-0 lg:py-0">
         <AdminSidebar

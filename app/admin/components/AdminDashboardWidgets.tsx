@@ -1,22 +1,49 @@
 import type { ReactNode } from "react";
-import { AlertTriangle, FileText, X } from "lucide-react";
+import {
+  AlertCircle,
+  AlertTriangle,
+  CheckCircle2,
+  FileText,
+  X,
+} from "lucide-react";
 
 export type ToastState = {
   ok?: boolean;
   message: string;
 } | null;
 
-export function ToastBanner({ toast }: { toast: NonNullable<ToastState> }) {
+export function ToastBanner({
+  toast,
+  onClose,
+}: {
+  toast: NonNullable<ToastState>;
+  onClose: () => void;
+}) {
+  const Icon = toast.ok ? CheckCircle2 : AlertCircle;
+
   return (
     <div
-      className={`fixed right-4 top-4 z-[120] max-w-sm rounded-2xl border px-4 py-3 text-sm font-semibold shadow-2xl ${
+      className={`fixed right-4 top-4 z-[150] flex w-[min(92vw,390px)] items-start gap-3 rounded-2xl border px-4 py-3 text-sm shadow-2xl ${
         toast.ok
           ? "border-green-200 bg-green-50 text-green-800"
           : "border-red-200 bg-red-50 text-red-700"
       }`}
       role="status"
+      aria-live="polite"
     >
-      {toast.message}
+      <Icon className="mt-0.5 shrink-0" size={20} />
+      <div className="min-w-0 flex-1">
+        <p className="font-bold">{toast.ok ? "Success" : "Something went wrong"}</p>
+        <p className="mt-0.5 leading-5">{toast.message}</p>
+      </div>
+      <button
+        type="button"
+        onClick={onClose}
+        className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full transition hover:bg-black/5"
+        aria-label="Close notification"
+      >
+        <X size={16} />
+      </button>
     </div>
   );
 }

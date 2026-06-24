@@ -400,6 +400,12 @@ export async function updateAboutContent(
       heroImagesEnabled: [0, 1, 2].map((index) =>
         checked(formData, `heroImage${index + 1}Enabled`)
       ),
+      heroImagePositions: [0, 1, 2].map(
+        (index) =>
+          text(formData, `heroImage${index + 1}Position`) ||
+          current.heroImagePositions?.[index] ||
+          "center center"
+      ),
       profileVisible: checked(formData, "profileVisible"),
       contactVisible: checked(formData, "contactVisible"),
       biographyVisible: checked(formData, "biographyVisible"),

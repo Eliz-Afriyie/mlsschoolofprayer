@@ -34,10 +34,15 @@ const highlights = [
 
 export default async function AboutPage() {
   const content = await getSiteContent("about");
-  const activeHeroImages = content.heroImages.filter(
-    (image, index) =>
-      image && (content.heroImagesEnabled?.[index] ?? true)
-  );
+  const activeHeroSlides = content.heroImages
+    .map((image, index) => ({
+      image,
+      position:
+        content.heroImagePositions?.[index] ??
+        (index === 0 ? "center top" : "center center"),
+      enabled: content.heroImagesEnabled?.[index] ?? true,
+    }))
+    .filter((slide) => slide.image && slide.enabled);
   const showSidebar = content.profileVisible || content.contactVisible;
   const socials = [
     {
@@ -73,9 +78,9 @@ export default async function AboutPage() {
 
   return (
     <main className="min-h-screen bg-[#F7F8F5]">
-      {content.heroVisible && activeHeroImages.length ? (
+      {content.heroVisible && activeHeroSlides.length ? (
         <AboutHero
-          images={activeHeroImages}
+          slides={activeHeroSlides}
           eyebrow={content.heroEyebrow}
           title={content.heroTitle}
           text={content.heroText}
