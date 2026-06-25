@@ -11,7 +11,7 @@ export default async function AdminLoginPage() {
 
   return (
     <main
-      className="relative flex min-h-screen items-center justify-center overflow-hidden px-6 py-20"
+      className="relative flex min-h-screen items-center justify-center overflow-hidden px-3 py-20 sm:px-6"
       style={{
         backgroundImage: "url('/devotional/devo-hero.jpg')",
         backgroundSize: "cover",

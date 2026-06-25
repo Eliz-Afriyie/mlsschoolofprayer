@@ -44,7 +44,7 @@ function Field({
   step?: string;
 }) {
   return (
-    <label className="grid gap-2 text-sm font-medium text-gray-700">
+    <label className="grid min-w-0 gap-2 text-sm font-medium text-gray-700">
       {label}
       <input
         name={name}
@@ -57,7 +57,7 @@ function Field({
         min={min}
         max={max}
         step={step}
-        className="h-12 rounded-xl border border-gray-200 bg-white px-4 text-gray-900 outline-none transition focus:border-green-700 focus:ring-2 focus:ring-green-700/15"
+        className="h-12 w-full min-w-0 max-w-full rounded-xl border border-gray-200 bg-white px-4 text-gray-900 outline-none transition file:max-w-full focus:border-green-700 focus:ring-2 focus:ring-green-700/15"
       />
     </label>
   );
@@ -65,9 +65,9 @@ function Field({
 
 function PriceField() {
   return (
-    <label className="grid gap-2 text-sm font-medium text-gray-700">
+    <label className="grid min-w-0 gap-2 text-sm font-medium text-gray-700">
       Price
-      <div className="grid gap-2 sm:grid-cols-[1fr_auto]">
+      <div className="grid min-w-0 gap-2 sm:grid-cols-[minmax(0,1fr)_auto]">
         <input
           name="priceAmount"
           type="number"
@@ -75,12 +75,12 @@ function PriceField() {
           step="0.01"
           placeholder="20.00"
           required
-          className="h-12 rounded-xl border border-gray-200 bg-white px-4 text-gray-900 outline-none transition focus:border-green-700 focus:ring-2 focus:ring-green-700/15"
+          className="h-12 w-full min-w-0 rounded-xl border border-gray-200 bg-white px-4 text-gray-900 outline-none transition focus:border-green-700 focus:ring-2 focus:ring-green-700/15"
         />
         <select
           name="priceCurrency"
           defaultValue="GHS"
-          className="h-12 rounded-xl border border-gray-200 bg-white px-4 text-gray-900 outline-none transition focus:border-green-700 focus:ring-2 focus:ring-green-700/15"
+          className="h-12 w-full min-w-0 rounded-xl border border-gray-200 bg-white px-4 text-gray-900 outline-none transition focus:border-green-700 focus:ring-2 focus:ring-green-700/15 sm:w-auto"
         >
           <option value="GHS">GHS</option>
           <option value="USD">USD</option>
@@ -206,7 +206,7 @@ export function DevotionalCreateForm({ onResult, onSuccess }: FormProps) {
           minLength={3}
           maxLength={80}
         />
-        <label className="grid gap-2 text-sm font-medium text-gray-700">
+        <label className="grid min-w-0 gap-2 text-sm font-medium text-gray-700">
           Excerpt
           <textarea
             name="excerpt"
@@ -215,7 +215,7 @@ export function DevotionalCreateForm({ onResult, onSuccess }: FormProps) {
             minLength={20}
             maxLength={500}
             placeholder="Write the short devotional summary..."
-            className="rounded-xl border border-gray-200 bg-white px-4 py-3 text-gray-900 outline-none transition focus:border-green-700 focus:ring-2 focus:ring-green-700/15"
+            className="w-full min-w-0 max-w-full rounded-xl border border-gray-200 bg-white px-4 py-3 text-gray-900 outline-none transition focus:border-green-700 focus:ring-2 focus:ring-green-700/15"
           />
         </label>
         <Field
@@ -316,7 +316,7 @@ export function BookCreateForm({ onResult, onSuccess }: FormProps) {
           maxLength={300}
           required={false}
         />
-        <label className="grid gap-2 text-sm font-medium text-gray-700">
+        <label className="grid min-w-0 gap-2 text-sm font-medium text-gray-700">
           Short Excerpt
           <textarea
             name="excerpt"
@@ -325,7 +325,7 @@ export function BookCreateForm({ onResult, onSuccess }: FormProps) {
             minLength={20}
             maxLength={400}
             placeholder="Write a short summary for cards and previews..."
-            className="rounded-xl border border-gray-200 bg-white px-4 py-3 text-gray-900 outline-none transition focus:border-green-700 focus:ring-2 focus:ring-green-700/15"
+            className="w-full min-w-0 max-w-full rounded-xl border border-gray-200 bg-white px-4 py-3 text-gray-900 outline-none transition focus:border-green-700 focus:ring-2 focus:ring-green-700/15"
           />
         </label>
         <Field
@@ -344,11 +344,11 @@ export function BookCreateForm({ onResult, onSuccess }: FormProps) {
 
 export default function AdminForms() {
   return (
-    <div className="grid gap-8 lg:grid-cols-2">
-      <div className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm">
+    <div className="grid min-w-0 gap-8 lg:grid-cols-2">
+      <div className="min-w-0 overflow-hidden rounded-2xl border border-gray-200 bg-white p-4 shadow-sm sm:p-6">
         <DevotionalCreateForm />
       </div>
-      <div className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm">
+      <div className="min-w-0 overflow-hidden rounded-2xl border border-gray-200 bg-white p-4 shadow-sm sm:p-6">
         <BookCreateForm />
       </div>
     </div>

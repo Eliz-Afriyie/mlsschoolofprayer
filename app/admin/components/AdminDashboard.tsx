@@ -154,12 +154,12 @@ export default function AdminDashboard({
   }, []);
 
   return (
-    <main className="min-h-screen bg-[#F7F8F5]">
+    <main className="min-h-screen overflow-x-hidden bg-[#F7F8F5]">
       {toast ? (
         <ToastBanner toast={toast} onClose={() => setToast(null)} />
       ) : null}
 
-      <div className="grid min-h-screen gap-6 px-4 py-5 sm:px-6 lg:grid-cols-[280px_1fr] lg:px-0 lg:py-0">
+      <div className="grid min-h-screen min-w-0 gap-6 px-3 py-4 sm:px-6 sm:py-5 lg:grid-cols-[280px_minmax(0,1fr)] lg:px-0 lg:py-0">
         <AdminSidebar
           section={section}
           setSection={setSection}
@@ -167,7 +167,7 @@ export default function AdminDashboard({
           onClose={() => setSidebarOpen(false)}
         />
 
-        <section className="min-w-0 py-2 lg:py-8 lg:pr-8">
+        <section className="w-full min-w-0 py-2 lg:py-8 lg:pr-8">
           <button
             type="button"
             onClick={() => setSidebarOpen(true)}
@@ -179,7 +179,7 @@ export default function AdminDashboard({
 
           {section === "overview" ? (
             <div className="grid gap-6">
-              <div className="rounded-2xl bg-green-900 p-7 text-white">
+              <div className="min-w-0 rounded-2xl bg-green-900 p-5 text-white sm:p-7">
                 <div className="flex flex-col gap-5 md:flex-row md:items-end md:justify-between">
                   <div>
                     <p className="text-sm font-semibold uppercase tracking-[3px] text-amber-300">
@@ -200,7 +200,7 @@ export default function AdminDashboard({
                 </div>
               </div>
 
-              <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+              <div className="grid grid-cols-2 gap-3 sm:gap-4 xl:grid-cols-4">
                 <StatCard
                   icon={<FileText size={20} />}
                   label="Devotionals Published"
@@ -224,7 +224,7 @@ export default function AdminDashboard({
               </div>
 
               <div className="grid gap-6">
-                <div className="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm">
+                <div className="min-w-0 rounded-2xl border border-gray-200 bg-white p-4 shadow-sm sm:p-5">
                   <div className="mb-5">
                     <h3 className="text-xl font-bold">Quick Actions</h3>
                     <p className="mt-1 text-sm text-gray-500">
@@ -257,7 +257,7 @@ export default function AdminDashboard({
                   </div>
                 </div>
 
-                <div className="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm">
+                <div className="min-w-0 overflow-hidden rounded-2xl border border-gray-200 bg-white p-4 shadow-sm sm:p-5">
                   <div className="mb-5">
                     <h3 className="text-xl font-bold">Recent Uploads</h3>
                     <p className="mt-1 text-sm text-gray-500">

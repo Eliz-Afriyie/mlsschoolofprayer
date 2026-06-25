@@ -86,7 +86,7 @@ export function Input({
       min={min}
       max={max}
       step={step}
-      className="h-10 rounded-lg border border-gray-200 px-3 text-sm outline-none focus:border-green-700"
+      className="h-10 w-full min-w-0 max-w-full rounded-lg border border-gray-200 px-3 text-sm outline-none focus:border-green-700"
     />
   );
 }
@@ -101,12 +101,18 @@ export function StatCard({
   value: ReactNode;
 }) {
   return (
-    <div className="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm">
-      <div className="mb-4 flex h-10 w-10 items-center justify-center rounded-xl bg-green-50 text-green-800">
+    <div className="flex min-w-0 items-center gap-3 rounded-xl border border-gray-200 bg-white p-3 shadow-sm sm:block sm:rounded-2xl sm:p-5">
+      <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-green-50 text-green-800 sm:mb-4 sm:h-10 sm:w-10 sm:rounded-xl">
         {icon}
       </div>
-      <p className="text-sm font-medium text-gray-500">{label}</p>
-      <p className="mt-2 text-3xl font-bold text-gray-950">{value}</p>
+      <div className="min-w-0">
+        <p className="text-xs font-medium leading-4 text-gray-500 sm:text-sm">
+          {label}
+        </p>
+        <p className="mt-1 text-xl font-bold text-gray-950 sm:mt-2 sm:text-3xl">
+          {value}
+        </p>
+      </div>
     </div>
   );
 }
@@ -151,7 +157,7 @@ export function ConfirmationModal({
 
   return (
     <div
-      className="fixed inset-0 z-[140] flex items-center justify-center bg-black/60 px-4 backdrop-blur-sm"
+      className="fixed inset-0 z-[140] flex items-center justify-center bg-black/60 px-3 py-3 backdrop-blur-sm sm:px-4"
       role="dialog"
       aria-modal="true"
       aria-labelledby="confirmation-title"
@@ -162,7 +168,7 @@ export function ConfirmationModal({
         onClick={onClose}
         aria-label="Cancel action"
       />
-      <div className="relative z-10 w-full max-w-md rounded-2xl border border-gray-200 bg-white p-6 shadow-2xl">
+      <div className="relative z-10 w-full min-w-0 max-w-md rounded-xl border border-gray-200 bg-white p-4 shadow-2xl sm:rounded-2xl sm:p-6">
         <div
           className={`flex h-12 w-12 items-center justify-center rounded-full ${
             warning
@@ -216,7 +222,7 @@ export function PaginationControls({
       <p>
         Showing {start}-{end} of {totalItems}
       </p>
-      <div className="flex items-center gap-2">
+      <div className="flex w-full items-center justify-between gap-2 sm:w-auto sm:justify-start">
         <button
           type="button"
           disabled={page === 1}
@@ -253,13 +259,13 @@ export function ModalShell({
   size?: "default" | "wide";
 }) {
   return (
-    <div className="fixed inset-0 z-[80] flex items-center justify-center bg-black/55 px-4 py-6">
+    <div className="fixed inset-0 z-[80] flex items-center justify-center bg-black/55 px-2 py-2 sm:px-4 sm:py-6">
       <div
-        className={`max-h-[90vh] w-full overflow-hidden rounded-2xl bg-white shadow-2xl ${
+        className={`max-h-[96dvh] w-full min-w-0 overflow-hidden rounded-xl bg-white shadow-2xl sm:max-h-[90vh] sm:rounded-2xl ${
           size === "wide" ? "max-w-4xl" : "max-w-2xl"
         }`}
       >
-        <div className="thin-scrollbar max-h-[90vh] overflow-y-auto p-6 pr-7 sm:p-8 sm:pr-9">
+        <div className="thin-scrollbar max-h-[96dvh] min-w-0 overflow-x-hidden overflow-y-auto p-4 sm:max-h-[90vh] sm:p-8 sm:pr-9">
           <div className="mb-5 flex items-center justify-between gap-4 border-b border-gray-100 pb-4">
             <h2 className="text-xl font-bold text-gray-950">{title}</h2>
             <button

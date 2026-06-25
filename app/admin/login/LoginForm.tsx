@@ -18,7 +18,7 @@ export default function LoginForm() {
   return (
     <form
       action={formAction}
-      className="relative z-10 w-full max-w-md rounded-2xl border border-white/35 bg-green-950/35 p-7 text-white shadow-2xl shadow-green-950/50 backdrop-blur-2xl sm:p-8"
+      className="relative z-10 w-full min-w-0 max-w-md rounded-2xl border border-white/35 bg-green-950/35 p-5 text-white shadow-2xl shadow-green-950/50 backdrop-blur-2xl sm:p-8"
     >
       <div className="mb-7">
         <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-xl border border-white/30 bg-white/20 text-amber-200 shadow-sm">
@@ -31,18 +31,18 @@ export default function LoginForm() {
       </div>
 
       <div className="grid gap-3.5">
-        <label className="grid gap-2 text-sm font-medium text-white/85">
+        <label className="grid min-w-0 gap-2 text-sm font-medium text-white/85">
           Username
           <input
             name="username"
             required
             autoComplete="username"
             placeholder="Enter admin username"
-            className="h-12 rounded-xl border border-white/35 bg-white/25 px-4 text-white outline-none shadow-inner shadow-green-950/10 transition placeholder:text-white/55 focus:border-amber-200 focus:bg-white/30 focus:ring-2 focus:ring-amber-200/30"
+            className="h-12 w-full min-w-0 rounded-xl border border-white/35 bg-white/25 px-4 text-white outline-none shadow-inner shadow-green-950/10 transition placeholder:text-white/55 focus:border-amber-200 focus:bg-white/30 focus:ring-2 focus:ring-amber-200/30"
           />
         </label>
 
-        <label className="grid gap-2 text-sm font-medium text-white/85">
+        <label className="grid min-w-0 gap-2 text-sm font-medium text-white/85">
           Password
           <div className="flex h-12 items-center rounded-xl border border-white/35 bg-white/25 px-4 shadow-inner shadow-green-950/10 transition focus-within:border-amber-200 focus-within:bg-white/30 focus-within:ring-2 focus-within:ring-amber-200/30">
             <input

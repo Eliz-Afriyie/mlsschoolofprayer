@@ -108,8 +108,8 @@ function SearchBar({
   placeholder: string;
 }) {
   return (
-    <label className="mb-5 flex h-12 items-center gap-3 rounded-xl bg-[#F7F8F5] px-4 text-gray-600">
-      <Search size={18} />
+    <label className="mb-5 flex h-12 w-full min-w-0 items-center gap-3 rounded-xl bg-[#F7F8F5] px-3 text-gray-600 sm:px-4">
+      <Search className="shrink-0" size={18} />
       <input
         type="search"
         value={value}
@@ -172,7 +172,7 @@ function FileField({
   accept?: string;
 }) {
   return (
-    <label className="grid gap-2 text-sm font-semibold text-gray-700">
+    <label className="grid min-w-0 gap-2 text-sm font-semibold text-gray-700">
       {label}
       <Input
         name={name}
@@ -200,9 +200,9 @@ function PriceEditor({ price }: { price: string }) {
   const parsed = parsePrice(price);
 
   return (
-    <label className="grid gap-2 text-sm font-semibold text-gray-700">
+    <label className="grid min-w-0 gap-2 text-sm font-semibold text-gray-700">
       Price
-      <div className="grid gap-2 md:grid-cols-[1fr_auto]">
+      <div className="grid min-w-0 gap-2 md:grid-cols-[minmax(0,1fr)_auto]">
         <Input
           name="priceAmount"
           defaultValue={parsed.amount}
@@ -213,7 +213,7 @@ function PriceEditor({ price }: { price: string }) {
         <select
           name="priceCurrency"
           defaultValue={parsed.currency}
-          className="h-10 rounded-lg border border-gray-200 px-3 text-sm outline-none focus:border-green-700"
+          className="h-10 w-full min-w-0 rounded-lg border border-gray-200 px-3 text-sm outline-none focus:border-green-700 md:w-auto"
         >
           <option value="GHS">GHS</option>
           <option value="USD">USD</option>
@@ -258,7 +258,7 @@ export function DevotionalTable({
   }
 
   return (
-    <div className="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm">
+    <div className="min-w-0 overflow-hidden rounded-2xl border border-gray-200 bg-white p-4 shadow-sm sm:p-5">
       <div className="mb-5 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <h2 className="text-2xl font-bold">Devotionals</h2>
@@ -283,9 +283,10 @@ export function DevotionalTable({
       />
 
       {filtered.length ? (
-        <div className="overflow-x-auto">
-          <table className="w-full min-w-[900px] border-separate border-spacing-y-2 text-left text-sm">
-            <thead className="text-xs uppercase tracking-[2px] text-gray-500">
+        <div className="min-w-0">
+          <div className="overflow-x-auto">
+            <table className="w-full min-w-[900px] border-separate border-spacing-y-2 text-left text-sm">
+              <thead className="text-xs uppercase tracking-[2px] text-gray-500">
               <tr>
                 <th className="px-3 py-2">Title</th>
                 <th className="px-3 py-2">Category</th>
@@ -294,8 +295,8 @@ export function DevotionalTable({
                 <th className="px-3 py-2">PDF</th>
                 <th className="px-3 py-2 text-right">Action</th>
               </tr>
-            </thead>
-            <tbody>
+              </thead>
+              <tbody>
               {paginated.map((item) => (
                 <tr key={item.id} className="bg-[#F7F8F5]">
                   <td className="rounded-l-xl px-3 py-3 font-semibold">
@@ -339,8 +340,9 @@ export function DevotionalTable({
                   </td>
                 </tr>
               ))}
-            </tbody>
-          </table>
+              </tbody>
+            </table>
+          </div>
           <PaginationControls
             page={currentPage}
             totalPages={totalPages}
@@ -416,7 +418,7 @@ export function DevotionalTable({
               required
               minLength={20}
               maxLength={500}
-              className="rounded-lg border border-gray-200 px-3 py-2 text-sm outline-none focus:border-green-700"
+              className="w-full min-w-0 rounded-lg border border-gray-200 px-3 py-2 text-sm outline-none focus:border-green-700"
             />
             <FileField
               name="image"
@@ -465,7 +467,7 @@ export function BookTable({ books, onAdd }: { books: Book[]; onAdd: () => void }
   }
 
   return (
-    <div className="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm">
+    <div className="min-w-0 overflow-hidden rounded-2xl border border-gray-200 bg-white p-4 shadow-sm sm:p-5">
       <div className="mb-5 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <h2 className="text-2xl font-bold">Books</h2>
@@ -490,9 +492,10 @@ export function BookTable({ books, onAdd }: { books: Book[]; onAdd: () => void }
       />
 
       {filtered.length ? (
-        <div className="overflow-x-auto">
-          <table className="w-full min-w-[900px] border-separate border-spacing-y-2 text-left text-sm">
-            <thead className="text-xs uppercase tracking-[2px] text-gray-500">
+        <div className="min-w-0">
+          <div className="overflow-x-auto">
+            <table className="w-full min-w-[900px] border-separate border-spacing-y-2 text-left text-sm">
+              <thead className="text-xs uppercase tracking-[2px] text-gray-500">
               <tr>
                 <th className="px-3 py-2">Title</th>
                 <th className="px-3 py-2">Category</th>
@@ -501,8 +504,8 @@ export function BookTable({ books, onAdd }: { books: Book[]; onAdd: () => void }
                 <th className="px-3 py-2">URL</th>
                 <th className="px-3 py-2 text-right">Action</th>
               </tr>
-            </thead>
-            <tbody>
+              </thead>
+              <tbody>
               {paginated.map((item) => (
                 <tr key={item.id} className="bg-[#F7F8F5]">
                   <td className="rounded-l-xl px-3 py-3 font-semibold">
@@ -548,8 +551,9 @@ export function BookTable({ books, onAdd }: { books: Book[]; onAdd: () => void }
                   </td>
                 </tr>
               ))}
-            </tbody>
-          </table>
+              </tbody>
+            </table>
+          </div>
           <PaginationControls
             page={currentPage}
             totalPages={totalPages}
@@ -634,7 +638,7 @@ export function BookTable({ books, onAdd }: { books: Book[]; onAdd: () => void }
               required
               minLength={20}
               maxLength={400}
-              className="rounded-lg border border-gray-200 px-3 py-2 text-sm outline-none focus:border-green-700"
+              className="w-full min-w-0 rounded-lg border border-gray-200 px-3 py-2 text-sm outline-none focus:border-green-700"
             />
             <FileField
               name="image"

@@ -43,7 +43,7 @@ function Field({
   required?: boolean;
 }) {
   return (
-    <label className="grid gap-2 text-sm font-semibold text-gray-700">
+    <label className="grid min-w-0 gap-2 text-sm font-semibold text-gray-700">
       {label}
       <input
         name={name}
@@ -51,7 +51,7 @@ function Field({
         defaultValue={type === "file" ? undefined : defaultValue}
         required={type === "file" ? false : required}
         accept={type === "file" ? "image/*" : undefined}
-        className="h-11 rounded-lg border border-gray-200 bg-white px-3 text-sm outline-none focus:border-green-700"
+        className="h-11 w-full min-w-0 max-w-full rounded-lg border border-gray-200 bg-white px-3 text-sm outline-none file:max-w-full focus:border-green-700"
       />
     </label>
   );
@@ -69,14 +69,14 @@ function TextArea({
   rows?: number;
 }) {
   return (
-    <label className="grid gap-2 text-sm font-semibold text-gray-700">
+    <label className="grid min-w-0 gap-2 text-sm font-semibold text-gray-700">
       {label}
       <textarea
         name={name}
         defaultValue={defaultValue}
         rows={rows}
         required
-        className="rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm leading-6 outline-none focus:border-green-700"
+        className="w-full min-w-0 max-w-full rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm leading-6 outline-none focus:border-green-700"
       />
     </label>
   );
@@ -95,7 +95,7 @@ function ImageField({
   const [removed, setRemoved] = useState(false);
 
   return (
-    <div className="grid gap-3">
+    <div className="grid min-w-0 gap-3">
       <p className="text-sm font-semibold text-gray-700">{label}</p>
       {current && !removed ? (
         <img
@@ -108,7 +108,7 @@ function ImageField({
         name={name}
         type="file"
         accept="image/jpeg,image/png,image/webp,image/gif"
-        className="rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm"
+        className="w-full min-w-0 max-w-full rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm file:max-w-full"
       />
       <input
         type="hidden"
@@ -172,8 +172,8 @@ function ToggleField({
   defaultChecked: boolean;
 }) {
   return (
-    <label className="flex cursor-pointer items-center justify-between gap-4 rounded-xl border border-gray-200 bg-[#F7F8F5] p-4">
-      <span>
+    <label className="flex min-w-0 cursor-pointer items-center justify-between gap-3 rounded-xl border border-gray-200 bg-[#F7F8F5] p-3 sm:gap-4 sm:p-4">
+      <span className="min-w-0 flex-1">
         <span className="flex items-center gap-2 font-semibold text-gray-900">
           {defaultChecked ? <Eye size={17} /> : <EyeOff size={17} />}
           {label}
@@ -184,7 +184,7 @@ function ToggleField({
         name={name}
         type="checkbox"
         defaultChecked={defaultChecked}
-        className="h-5 w-5 accent-green-700"
+        className="h-5 w-5 shrink-0 accent-green-700"
       />
     </label>
   );
@@ -198,12 +198,12 @@ function ImagePositionField({
   defaultValue: string;
 }) {
   return (
-    <label className="grid gap-2 text-sm font-semibold text-gray-700">
+    <label className="grid min-w-0 gap-2 text-sm font-semibold text-gray-700">
       Image Position
       <select
         name={name}
         defaultValue={defaultValue}
-        className="h-11 rounded-lg border border-gray-200 bg-white px-3 text-sm outline-none focus:border-green-700"
+        className="h-11 w-full min-w-0 max-w-full rounded-lg border border-gray-200 bg-white px-3 text-sm outline-none focus:border-green-700"
       >
         <option value="center top">Top</option>
         <option value="center center">Center</option>
@@ -251,7 +251,7 @@ function Panel({
   children: React.ReactNode;
 }) {
   return (
-    <div className="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm sm:p-7">
+    <div className="min-w-0 overflow-hidden rounded-2xl border border-gray-200 bg-white p-4 shadow-sm sm:p-7">
       <div className="mb-6">
         <h2 className="text-2xl font-bold text-gray-950">{title}</h2>
         <p className="mt-1 text-sm text-gray-500">{text}</p>
