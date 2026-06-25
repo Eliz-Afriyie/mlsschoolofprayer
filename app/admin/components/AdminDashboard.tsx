@@ -154,7 +154,7 @@ export default function AdminDashboard({
   }, []);
 
   return (
-    <main className="min-h-screen overflow-x-hidden bg-[#F7F8F5]">
+    <main className="admin-shell min-h-screen overflow-x-hidden bg-[#F7F8F5]">
       {toast ? (
         <ToastBanner toast={toast} onClose={() => setToast(null)} />
       ) : null}
