@@ -144,7 +144,7 @@ export default function AdminSidebar({
       </aside>
 
       <div
-        className={`fixed inset-0 z-[90] bg-black/50 backdrop-blur-sm transition-opacity duration-300 lg:hidden ${
+        className={`fixed inset-0 z-[90] h-dvh overflow-hidden bg-black/50 backdrop-blur-sm transition-opacity duration-300 lg:hidden ${
           open ? "pointer-events-auto opacity-100" : "pointer-events-none opacity-0"
         }`}
       >
@@ -156,11 +156,11 @@ export default function AdminSidebar({
         />
 
         <aside
-          className={`absolute left-0 top-0 flex h-full w-[min(86vw,320px)] flex-col bg-white p-5 shadow-2xl transition-transform duration-300 ${
+          className={`thin-scrollbar absolute left-0 top-0 flex h-dvh w-[min(86vw,320px)] min-w-0 flex-col overflow-x-hidden overflow-y-auto overscroll-contain bg-white p-5 pb-[calc(1.25rem+env(safe-area-inset-bottom))] shadow-2xl transition-transform duration-300 ${
             open ? "translate-x-0" : "-translate-x-full"
           }`}
         >
-          <div className="mb-4 flex justify-end">
+          <div className="sticky top-0 z-10 mb-4 flex justify-end bg-white pb-1">
             <button
               type="button"
               onClick={onClose}
