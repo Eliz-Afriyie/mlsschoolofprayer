@@ -56,6 +56,7 @@ export default function Navbar({ content }: { content: SiteSettings }) {
       return;
     }
 
+    setQuery("");
     setSearchOpen(false);
     setMenuOpen(false);
     router.push(`/search?q=${encodeURIComponent(trimmedQuery)}`);

@@ -21,7 +21,7 @@ export default function SiteChrome({
 
   return (
     <>
-      <Navbar content={siteContent} />
+      <Navbar key={pathname} content={siteContent} />
       {children}
       {siteContent.footerVisible ? <Footer content={siteContent} /> : null}
     </>
