@@ -44,7 +44,14 @@ function Field({
 }) {
   return (
     <label className="grid min-w-0 gap-2 text-sm font-semibold text-gray-700">
-      {label}
+      <span>
+        {label}
+        {type !== "file" && required ? (
+          <span className="ml-1 text-red-600" aria-hidden="true">
+            *
+          </span>
+        ) : null}
+      </span>
       <input
         name={name}
         type={type}
@@ -70,7 +77,12 @@ function TextArea({
 }) {
   return (
     <label className="grid min-w-0 gap-2 text-sm font-semibold text-gray-700">
-      {label}
+      <span>
+        {label}
+        <span className="ml-1 text-red-600" aria-hidden="true">
+          *
+        </span>
+      </span>
       <textarea
         name={name}
         defaultValue={defaultValue}

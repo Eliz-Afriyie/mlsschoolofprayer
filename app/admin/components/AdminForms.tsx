@@ -45,7 +45,14 @@ function Field({
 }) {
   return (
     <label className="grid min-w-0 gap-2 text-sm font-medium text-gray-700">
-      {label}
+      <span>
+        {label}
+        {required ? (
+          <span className="ml-1 text-red-600" aria-hidden="true">
+            *
+          </span>
+        ) : null}
+      </span>
       <input
         name={name}
         type={type}
@@ -66,7 +73,12 @@ function Field({
 function PriceField() {
   return (
     <label className="grid min-w-0 gap-2 text-sm font-medium text-gray-700">
-      Price
+      <span>
+        Price
+        <span className="ml-1 text-red-600" aria-hidden="true">
+          *
+        </span>
+      </span>
       <div className="grid min-w-0 gap-2 sm:grid-cols-[minmax(0,1fr)_auto]">
         <input
           name="priceAmount"
@@ -207,7 +219,12 @@ export function DevotionalCreateForm({ onResult, onSuccess }: FormProps) {
           maxLength={80}
         />
         <label className="grid min-w-0 gap-2 text-sm font-medium text-gray-700">
-          Excerpt
+          <span>
+            Excerpt
+            <span className="ml-1 text-red-600" aria-hidden="true">
+              *
+            </span>
+          </span>
           <textarea
             name="excerpt"
             rows={4}
@@ -223,11 +240,10 @@ export function DevotionalCreateForm({ onResult, onSuccess }: FormProps) {
           label="Cover Image"
           type="file"
           accept="image/jpeg,image/png,image/webp,image/gif"
-          required={false}
         />
         <Field
           name="pdf"
-          label="Downloadable PDF"
+          label="Downloadable PDF (Optional)"
           type="file"
           accept="application/pdf"
           required={false}
@@ -317,7 +333,12 @@ export function BookCreateForm({ onResult, onSuccess }: FormProps) {
           required={false}
         />
         <label className="grid min-w-0 gap-2 text-sm font-medium text-gray-700">
-          Short Excerpt
+          <span>
+            Short Excerpt
+            <span className="ml-1 text-red-600" aria-hidden="true">
+              *
+            </span>
+          </span>
           <textarea
             name="excerpt"
             rows={3}
@@ -333,7 +354,6 @@ export function BookCreateForm({ onResult, onSuccess }: FormProps) {
           label="Cover Image"
           type="file"
           accept="image/jpeg,image/png,image/webp,image/gif"
-          required={false}
         />
         <Message state={state} />
         <SubmitButton label="Upload Book" pendingLabel="Uploading..." />

@@ -185,6 +185,48 @@ function FileField({
   );
 }
 
+function LabeledInput({
+  label,
+  name,
+  defaultValue,
+  type = "text",
+  required = true,
+  min,
+  max,
+  step,
+}: {
+  label: string;
+  name: string;
+  defaultValue: string | number;
+  type?: string;
+  required?: boolean;
+  min?: string;
+  max?: string;
+  step?: string;
+}) {
+  return (
+    <label className="grid min-w-0 gap-2 text-sm font-semibold text-gray-700">
+      <span>
+        {label}
+        {required ? (
+          <span className="ml-1 text-red-600" aria-hidden="true">
+            *
+          </span>
+        ) : null}
+      </span>
+      <Input
+        name={name}
+        defaultValue={defaultValue}
+        type={type}
+        required={required}
+        min={min}
+        max={max}
+        step={step}
+      />
+    </label>
+  );
+}
+
 function parsePrice(value: string) {
   const normalized = value.trim();
   const currency = normalized.startsWith("$") ? "USD" : "GHS";
@@ -201,7 +243,12 @@ function PriceEditor({ price }: { price: string }) {
 
   return (
     <label className="grid min-w-0 gap-2 text-sm font-semibold text-gray-700">
-      Price
+      <span>
+        Price
+        <span className="ml-1 text-red-600" aria-hidden="true">
+          *
+        </span>
+      </span>
       <div className="grid min-w-0 gap-2 md:grid-cols-[minmax(0,1fr)_auto]">
         <Input
           name="priceAmount"
@@ -404,22 +451,50 @@ export function DevotionalTable({
             <input type="hidden" name="currentImage" value={editing.image} />
             <input type="hidden" name="currentPdf" value={editing.pdfUrl ?? ""} />
             <CoverImagePreview title={editing.title} image={editing.image} />
-            <Input name="title" defaultValue={editing.title} />
-            <div className="grid gap-3 md:grid-cols-2">
-              <Input name="category" defaultValue={editing.category} />
-              <Input name="readTime" defaultValue={editing.readTime} />
-            </div>
-            <Input name="author" defaultValue={editing.author} />
-            <Input name="scripture" defaultValue={editing.scripture} />
-            <textarea
-              name="excerpt"
-              defaultValue={editing.excerpt}
-              rows={8}
-              required
-              minLength={20}
-              maxLength={500}
-              className="w-full min-w-0 rounded-lg border border-gray-200 px-3 py-2 text-sm outline-none focus:border-green-700"
+            <LabeledInput
+              label="Title"
+              name="title"
+              defaultValue={editing.title}
             />
+            <div className="grid gap-3 md:grid-cols-2">
+              <LabeledInput
+                label="Category"
+                name="category"
+                defaultValue={editing.category}
+              />
+              <LabeledInput
+                label="Read Time"
+                name="readTime"
+                defaultValue={editing.readTime}
+              />
+            </div>
+            <LabeledInput
+              label="Author"
+              name="author"
+              defaultValue={editing.author}
+            />
+            <LabeledInput
+              label="Scripture"
+              name="scripture"
+              defaultValue={editing.scripture}
+            />
+            <label className="grid min-w-0 gap-2 text-sm font-semibold text-gray-700">
+              <span>
+                Excerpt
+                <span className="ml-1 text-red-600" aria-hidden="true">
+                  *
+                </span>
+              </span>
+              <textarea
+                name="excerpt"
+                defaultValue={editing.excerpt}
+                rows={8}
+                required
+                minLength={20}
+                maxLength={500}
+                className="w-full min-w-0 rounded-lg border border-gray-200 px-3 py-2 text-sm outline-none focus:border-green-700"
+              />
+            </label>
             <FileField
               name="image"
               label="Cover Image"
@@ -427,7 +502,7 @@ export function DevotionalTable({
             />
             <FileField
               name="pdf"
-              label="Downloadable PDF"
+              label="Downloadable PDF (Optional)"
               accept="application/pdf"
             />
             <SaveButton />
@@ -611,11 +686,24 @@ export function BookTable({ books, onAdd }: { books: Book[]; onAdd: () => void }
             <input type="hidden" name="id" value={editing.id} />
             <input type="hidden" name="currentImage" value={editing.image} />
             <CoverImagePreview title={editing.title} image={editing.image} />
-            <Input name="title" defaultValue={editing.title} />
-            <Input name="author" defaultValue={editing.author} />
+            <LabeledInput
+              label="Title"
+              name="title"
+              defaultValue={editing.title}
+            />
+            <LabeledInput
+              label="Author"
+              name="author"
+              defaultValue={editing.author}
+            />
             <div className="grid gap-3 md:grid-cols-2">
-              <Input name="category" defaultValue={editing.category} />
-              <Input
+              <LabeledInput
+                label="Category"
+                name="category"
+                defaultValue={editing.category}
+              />
+              <LabeledInput
+                label="Rating"
                 name="rating"
                 defaultValue={editing.rating}
                 type="number"
@@ -625,21 +713,30 @@ export function BookTable({ books, onAdd }: { books: Book[]; onAdd: () => void }
               />
             </div>
             <PriceEditor price={editing.price} />
-            <Input
+            <LabeledInput
+              label="Amazon Link"
               name="amazonUrl"
               defaultValue={editing.amazonUrl ?? ""}
               type="url"
               required={false}
             />
-            <textarea
-              name="excerpt"
-              defaultValue={editing.excerpt ?? editing.description}
-              rows={7}
-              required
-              minLength={20}
-              maxLength={400}
-              className="w-full min-w-0 rounded-lg border border-gray-200 px-3 py-2 text-sm outline-none focus:border-green-700"
-            />
+            <label className="grid min-w-0 gap-2 text-sm font-semibold text-gray-700">
+              <span>
+                Short Excerpt
+                <span className="ml-1 text-red-600" aria-hidden="true">
+                  *
+                </span>
+              </span>
+              <textarea
+                name="excerpt"
+                defaultValue={editing.excerpt ?? editing.description}
+                rows={7}
+                required
+                minLength={20}
+                maxLength={400}
+                className="w-full min-w-0 rounded-lg border border-gray-200 px-3 py-2 text-sm outline-none focus:border-green-700"
+              />
+            </label>
             <FileField
               name="image"
               label="Cover Image"

@@ -44,6 +44,10 @@ function checked(formData: FormData, key: string) {
   return formData.get(key) === "on";
 }
 
+function hasUploadedFile(value: FormDataEntryValue | null) {
+  return value instanceof File && value.size > 0;
+}
+
 function formatBookPrice(formData: FormData) {
   const rawAmount = text(formData, "priceAmount") || text(formData, "price");
   const currency = text(formData, "priceCurrency") === "USD" ? "USD" : "GHS";
@@ -103,6 +107,7 @@ export async function createBook(
     const excerpt = text(formData, "excerpt");
     const description = text(formData, "description") || excerpt;
     const amazonUrl = text(formData, "amazonUrl");
+    const imageFile = formData.get("image");
 
     if (!title || !author || !category || !price || !excerpt) {
       return {
@@ -111,10 +116,14 @@ export async function createBook(
       };
     }
 
-    const image = await saveImageUpload(
-      formData.get("image"),
-      defaultImage.book
-    );
+    if (!hasUploadedFile(imageFile)) {
+      return {
+        ok: false,
+        message: "Please upload a cover image for the book.",
+      };
+    }
+
+    const image = await saveImageUpload(imageFile, "");
 
     await addBook({
       title,
@@ -157,6 +166,7 @@ export async function createDevotional(
     const author = text(formData, "author");
     const scripture = text(formData, "scripture");
     const excerpt = text(formData, "excerpt");
+    const imageFile = formData.get("image");
 
     if (
       !title ||
@@ -172,10 +182,14 @@ export async function createDevotional(
       };
     }
 
-    const image = await saveImageUpload(
-      formData.get("image"),
-      defaultImage.devotional
-    );
+    if (!hasUploadedFile(imageFile)) {
+      return {
+        ok: false,
+        message: "Please upload a cover image for the devotional.",
+      };
+    }
+
+    const image = await saveImageUpload(imageFile, "");
     const pdfUrl = await savePdfUpload(formData.get("pdf"));
 
     await addDevotional({

@@ -32,7 +32,12 @@ export default function LoginForm() {
 
       <div className="grid gap-3.5">
         <label className="grid min-w-0 gap-2 text-sm font-medium text-white/85">
-          Username
+          <span>
+            Username
+            <span className="ml-1 text-red-300" aria-hidden="true">
+              *
+            </span>
+          </span>
           <input
             name="username"
             required
@@ -43,7 +48,12 @@ export default function LoginForm() {
         </label>
 
         <label className="grid min-w-0 gap-2 text-sm font-medium text-white/85">
-          Password
+          <span>
+            Password
+            <span className="ml-1 text-red-300" aria-hidden="true">
+              *
+            </span>
+          </span>
           <div className="flex h-12 items-center rounded-xl border border-white/35 bg-white/25 px-4 shadow-inner shadow-green-950/10 transition focus-within:border-amber-200 focus-within:bg-white/30 focus-within:ring-2 focus-within:ring-amber-200/30">
             <input
               name="password"
